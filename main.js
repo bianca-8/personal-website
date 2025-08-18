@@ -2,15 +2,17 @@
 const Graph = ForceGraph3D()(document.getElementById("mindmap"))
   .graphData({
     nodes: [
-  { id: "Me", group: 1, fx: 0, fy: 100, fz: 0, img: 'github.png' },
+  { id: "Bianca", group: 1, fx: 0, fy: 100, fz: 0},
   { id: "Projects", group: 2, fx: -50, fy: 50, fz: 0, img: 'linkedin.png' },
   { id: "Languages", group: 2, fx: 0, fy: 50, fz: 50, img: 'github.png' },
-  { id: "Hackathons", group: 2, fx: 50, fy: 50, fz: 0, img: 'linkedin.png' }
+  { id: "Hackathons", group: 2, fx: 50, fy: 50, fz: 0, img: 'linkedin.png' },
+  { id: "Hi", group: 2, fx: 25, fy: 75, fz: 50, img: 'linkedin.png' }
     ],
     links: [
-      { source: "Me", target: "Projects" },
-      { source: "Me", target: "Languages" },
-      { source: "Me", target: "Hackathons" }
+      { source: "Bianca", target: "Projects" },
+      { source: "Bianca", target: "Languages" },
+      { source: "Bianca", target: "Hackathons" },
+      { source: "Bianca", target: "Hi" }
     ]
   })
 
@@ -46,15 +48,75 @@ Graph.linkColor(() => '#ffffff');
 Graph.linkWidth(() => 1);
 Graph.linkOpacity(() => 0.8); 
 
-// Example: function to dynamically add nodes
-function addNode(id, group, parentId) {
-  const data = Graph.graphData();
-  data.nodes.push({ id, group });
-  data.links.push({ source: parentId, target: id });
-  Graph.graphData(data);
+// ===================== TEXT SPRITE APPROACH (no FontLoader needed) =====================
+function makeTextSprite(text, { fontFace='Arial', fontSize=120, color='#ffffff', background='transparent', padding=20 }={}) {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  ctx.font = `bold ${fontSize}px ${fontFace}`;
+  const textMetrics = ctx.measureText(text);
+  const textWidth = Math.ceil(textMetrics.width) + padding*2;
+  const textHeight = fontSize + padding*2;
+  canvas.width = textWidth;
+  canvas.height = textHeight;
+  // redraw after resize
+  ctx.font = `bold ${fontSize}px ${fontFace}`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  if(background !== 'transparent') {
+    ctx.fillStyle = background;
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+  }
+  ctx.fillStyle = color;
+  ctx.fillText(text, canvas.width/2, canvas.height/2);
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.needsUpdate = true;
+  const material = new THREE.SpriteMaterial({ map: texture, transparent: true });
+  const sprite = new THREE.Sprite(material);
+  const scaleFactor = 0.25; // adjust sizing in scene
+  sprite.scale.set(canvas.width*scaleFactor, canvas.height*scaleFactor, 1);
+  return sprite;
 }
 
-Graph.backgroundColor('#FEDCDB');
+function updateNodeObjects(node) {
+  if (node.id === "Bianca") {
+    return makeTextSprite('Bianca', { fontFace:'Arial', fontSize:160, color: currentBiancaColor });
+  }
+
+  if (node.img) {
+    const texture = new THREE.TextureLoader().load(node.img);
+    const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture }));
+    sprite.scale.set(12, 12, 1);
+    return sprite;
+  }
+
+  return new THREE.Mesh(
+    new THREE.SphereGeometry(5, 16, 16),
+    new THREE.MeshBasicMaterial({ color: 0x00ff00 })
+  );
+}
+// Re-register custom node object builder with sprite text logic
+Graph.nodeThreeObject(updateNodeObjects);
+// ==============================================================================
+
+// THEME STATE FOR GRAPH/NODE COLORS
+let currentBiancaColor = '#ff3366';
+function setGraphTheme(mode){
+  if(mode === 'blue'){
+    Graph.backgroundColor('#0d1b2a');
+    currentBiancaColor = '#66b2ff';
+  } else {
+    Graph.backgroundColor('#FEDCDB');
+    currentBiancaColor = '#ff3366';
+  }
+  // refresh node visuals
+  Graph.nodeThreeObject(updateNodeObjects);
+  if(typeof Graph.refresh === 'function'){ Graph.refresh(); }
+  // also ensure canvas element reflects color if library doesn't
+  requestAnimationFrame(()=>{ const c=document.querySelector('#mindmap canvas'); if(c) c.style.background = (mode==='blue'?'#0d1b2a':'#FEDCDB'); });
+}
+
+// Initial theme setup`
+setGraphTheme('light');
 
 // ignite button
 (function(){
@@ -85,15 +147,17 @@ function relPos(e){
 }
 
 function startSprayMode(){
+  if(spraying) return;
   spraying = true;
   if(!sprayLayer){
     sprayLayer = document.createElement('div');
     sprayLayer.id = 'spray-layer';
+    sprayLayer.style.cursor = 'crosshair';
     document.body.appendChild(sprayLayer);
   }
   targetScore = window.innerWidth * window.innerHeight * 0.55;
   coverageScore = 0;
-  btn.textContent = 'Extinguish';
+  btn.textContent = 'Spraying...';
 }
 
 function spawnBubble(container){
@@ -105,16 +169,25 @@ function spawnBubble(container){
 }
 
 function drainWater(){
-  if(drained) return; drained = true;
-  if(sprayLayer){ sprayLayer.style.transition = 'opacity .4s'; sprayLayer.style.opacity = '.3'; }
+  if(drained) return; 
+  drained = true;
+  if(sprayLayer){
+    sprayLayer.style.transition = 'opacity .4s';
+    sprayLayer.style.opacity = '.3';
+  }
   const drain = document.createElement('div');
-  drain.id = 'water-drain'; drain.style.zIndex = '1200';
+  drain.id = 'water-drain';
+  drain.style.zIndex = '1200';
   document.body.appendChild(drain);
-  const bubbleInterval = setInterval(()=>{ if(!document.body.contains(drain)) { clearInterval(bubbleInterval); return;} for(let i=0;i<3;i++) spawnBubble(drain); }, 260);
+  const bubbleInterval = setInterval(()=>{
+    if(!document.body.contains(drain)) { clearInterval(bubbleInterval); return; }
+    for(let i=0;i<3;i++) spawnBubble(drain);
+  }, 260);
   drain.addEventListener('animationend', ()=>{
     clearInterval(bubbleInterval);
     if(sprayLayer){ sprayLayer.remove(); sprayLayer=null; }
     document.body.classList.remove('blue-theme');
+    setGraphTheme('light');
     btn.textContent = 'Ignite Theme';
     coverageScore = 0; spraying=false; drained=false; drain.remove();
   }, { once:true });
@@ -140,23 +213,28 @@ function createDrop(x,y){
 
 btn.addEventListener('click', () => {
   const isBlue = document.body.classList.contains('blue-theme');
-  if(!isBlue && !spraying){
+  if(!isBlue){
+    // Ignite sequence
     ensureFireLine();
     overlay.classList.add('line-burning');
     overlay.addEventListener('animationend', () => {
       document.body.classList.add('blue-theme');
+      setGraphTheme('blue');
       overlay.classList.remove('line-burning');
-      overlay.innerHTML = ''; // remove black mask so blue shows fully
-      btn.textContent = 'Spray';
+      overlay.innerHTML = '';
+      btn.textContent = 'Spray'; // now user must click again to start spraying
     }, { once:true });
-  } else if(isBlue && !spraying && !drained){
-    startSprayMode();
-  } else if(isBlue && spraying && !drained){
-    drainWater();
+  } else if(isBlue && !spraying){
+    startSprayMode(); // begin spraying only after explicit click in blue mode
   }
+  // If already spraying, ignore further clicks.
 });
 
-
-window.addEventListener('pointermove', e => { if(!spraying) return; const {x,y} = relPos(e); addDrop(x,y); });
-window.addEventListener('pointerleave', ()=> { lastX = lastY = null; });
+// --- Spray interaction events (restored) ---
+function handlePointerMove(e){ if(!spraying) return; const {x,y}=relPos(e); addDrop(x,y); }
+window.addEventListener('pointermove', handlePointerMove);
+window.addEventListener('pointerdown', e=>{ if(!spraying) return; const {x,y}=relPos(e); addDrop(x,y); });
+window.addEventListener('pointerup', ()=>{ lastX = lastY = null; });
+window.addEventListener('pointerleave', ()=>{ lastX = lastY = null; });
+// ------------------------------------------------
 })();

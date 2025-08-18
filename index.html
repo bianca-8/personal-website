@@ -7,8 +7,13 @@
     <link
       href="https://fonts.googleapis.com/css?family=Happy+Monkey"
       rel="stylesheet"/>
-    <script src="https://unpkg.com/three@0.152.2/build/three.min.js"></script>
-    <script src="https://unpkg.com/3d-force-graph"></script>
+      <!-- Three.js core -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+<!-- 3d-force-graph (may set/overwrite global THREE) -->
+<script src="https://unpkg.com/3d-force-graph"></script>
+<!-- Load FontLoader & TextGeometry AFTER force-graph so they extend the final THREE instance -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/loaders/FontLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/geometries/TextGeometry.js"></script>
     <script src="main.js" defer></script>
   </head>
   <body>
