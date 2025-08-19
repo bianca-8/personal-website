@@ -109,7 +109,7 @@ function createRoundedBoxGeometry(size, radius, segments = 4){
   }
   window.buildBiancaMesh = function(){
     const baseColor = currentBiancaColor;
-    const depthLayers = 40; // flat stack
+    const depthLayers = 60; // flat stack
     const gap = 0.8;        // spacing between layers
     const group = new THREE.Group();
     let baseTexInfo = makeLayerTexture(baseColor);
