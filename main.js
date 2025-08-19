@@ -94,8 +94,56 @@ function createRoundedBoxGeometry(size, radius, segments = 4){
   return geom;
 }
 
+(function setupBiancaPseudo3D(){
+  function makeLayerTexture(color){
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const fontSize = 180;
+    ctx.font = `900 ${fontSize}px Arial`;
+    const w = ctx.measureText('Bianca').width + 120; const h = fontSize + 160;
+    canvas.width = w; canvas.height = h;
+    ctx.font = `900 ${fontSize}px Arial`;
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillStyle = color; ctx.fillText('Bianca', w/2, h/2 + 10);
+    const tex = new THREE.CanvasTexture(canvas); tex.needsUpdate = true; return { tex, w, h };
+  }
+  window.buildBiancaMesh = function(){
+    const baseColor = currentBiancaColor;
+    const depthLayers = 40; // flat stack
+    const gap = 0.8;        // spacing between layers
+    const group = new THREE.Group();
+    let baseTexInfo = makeLayerTexture(baseColor);
+    const geom = new THREE.PlaneGeometry(baseTexInfo.w, baseTexInfo.h);
+
+    for(let i=0;i<depthLayers;i++){
+      const shade = 1 - (i/(depthLayers-1))*0.55; // keep depth shading
+      const r = Math.max(0,Math.min(255, Math.round(parseInt(baseColor.slice(1,3),16)*shade)));
+      const g = Math.max(0,Math.min(255, Math.round(parseInt(baseColor.slice(3,5),16)*shade)));
+      const b = Math.max(0,Math.min(255, Math.round(parseInt(baseColor.slice(5,7),16)*shade)));
+      const layerColor = `#${r.toString(16).padStart(2,'0')}${g.toString(16).padStart(2,'0')}${b.toString(16).padStart(2,'0')}`;
+      const { tex } = (i===0 ? baseTexInfo : makeLayerTexture(layerColor));
+      const mat = new THREE.MeshBasicMaterial({ map: tex, transparent:true, side: THREE.DoubleSide, alphaTest:0.05, depthWrite:false });
+      const layer = new THREE.Mesh(geom, mat);
+      layer.position.z = - (i * gap);
+      group.add(layer);
+    }
+
+    group.scale.set(0.11,0.11,0.11);
+    group.rotation.x = -0.15; 
+    group.rotation.y = 0.18;
+    group.name = 'BiancaPseudo3D';
+    window._bianca3DMesh = group; 
+    window._lastBiancaColor = baseColor;
+  };
+  buildBiancaMesh();
+})();
+
 function updateNodeObjects(node) {
   if (node.id === "Bianca") {
+    if(window._bianca3DMesh){
+      if(window._lastBiancaColor !== currentBiancaColor){ buildBiancaMesh(); }
+      return window._bianca3DMesh; 
+    }
     return makeTextSprite('Bianca', { fontFace:'Arial', fontSize:160, color: currentBiancaColor });
   }
   if (node.img) {
