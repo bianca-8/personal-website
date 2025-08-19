@@ -15,28 +15,11 @@ const Graph = ForceGraph3D()(document.getElementById("mindmap"))
       { source: "Bianca", target: "Hi" }
     ]
   })
-
-  Graph.nodeThreeObject(node => {
-  if (node.img) {
-    const texture = new THREE.TextureLoader().load(node.img);
-    const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture }));
-    sprite.scale.set(12, 12, 1);
-    return sprite;
-  } else {
-    // Fallback: a small colored sphere
-    const geometry = new THREE.SphereGeometry(5, 16, 16);
-    const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-    return new THREE.Mesh(geometry, material);
-  }
-})
-
   .nodeAutoColorBy("group")
   .nodeLabel(node => node.id)
   .onNodeClick(node => {
-    // Smooth camera transition to clicked node
     const distance = 40;
     const distRatio = 1 + distance / Math.hypot(node.x, node.y, node.z);
-
     Graph.cameraPosition(
       { x: node.x * distRatio, y: node.y * distRatio, z: node.z * distRatio },
       node,
@@ -58,7 +41,6 @@ function makeTextSprite(text, { fontFace='Arial', fontSize=120, color='#ffffff',
   const textHeight = fontSize + padding*2;
   canvas.width = textWidth;
   canvas.height = textHeight;
-  // redraw after resize
   ctx.font = `bold ${fontSize}px ${fontFace}`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
@@ -72,34 +54,71 @@ function makeTextSprite(text, { fontFace='Arial', fontSize=120, color='#ffffff',
   texture.needsUpdate = true;
   const material = new THREE.SpriteMaterial({ map: texture, transparent: true });
   const sprite = new THREE.Sprite(material);
-  const scaleFactor = 0.25; // adjust sizing in scene
+  const scaleFactor = 0.25;
   sprite.scale.set(canvas.width*scaleFactor, canvas.height*scaleFactor, 1);
   return sprite;
+}
+
+// THEME STATE FOR GRAPH/NODE COLORS (moved up so updateNodeObjects can reference safely)
+let currentBiancaColor = '#ff3366';
+
+// Procedural rounded box geometry (approximate fillet)
+function createRoundedBoxGeometry(size, radius, segments = 4){
+  radius = Math.min(radius, size/2 * 0.999);
+  const half = size/2;
+  const inner = half - radius;
+  const seg = Math.max(1, segments);
+  const geom = new THREE.BoxGeometry(size, size, size, seg*2, seg*2, seg*2);
+  const pos = geom.attributes.position;
+  const v = new THREE.Vector3();
+  for(let i=0;i<pos.count;i++){
+    v.fromBufferAttribute(pos, i);
+    const ax = Math.abs(v.x), ay = Math.abs(v.y), az = Math.abs(v.z);
+    if(ax <= inner && ay <= inner && az <= inner) continue; // inner cube untouched
+    // Clamp to inner cube base corner
+    const bx = Math.sign(v.x) * Math.min(ax, inner);
+    const by = Math.sign(v.y) * Math.min(ay, inner);
+    const bz = Math.sign(v.z) * Math.min(az, inner);
+    // Direction from base corner
+    const dx = v.x - bx;
+    const dy = v.y - by;
+    const dz = v.z - bz;
+    const d = Math.hypot(dx,dy,dz) || 1;
+    // Project onto sphere of radius at base corner
+    const k = radius / d;
+    v.set(bx + dx*k, by + dy*k, bz + dz*k);
+    pos.setXYZ(i, v.x, v.y, v.z);
+  }
+  pos.needsUpdate = true;
+  geom.computeVertexNormals();
+  return geom;
 }
 
 function updateNodeObjects(node) {
   if (node.id === "Bianca") {
     return makeTextSprite('Bianca', { fontFace:'Arial', fontSize:160, color: currentBiancaColor });
   }
-
   if (node.img) {
-    const texture = new THREE.TextureLoader().load(node.img);
-    const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture }));
-    sprite.scale.set(12, 12, 1);
-    return sprite;
+    const cache = (updateNodeObjects._texCache || (updateNodeObjects._texCache = {}));
+    let tex = cache[node.img];
+    if(!tex){ tex = new THREE.TextureLoader().load(node.img); cache[node.img] = tex; }
+    const size = 14;
+    const radius = size * 0.25; // moderate rounding (reduced from 0.42)
+    const key = size+":"+radius;
+    const gCache = (updateNodeObjects._geomCache || (updateNodeObjects._geomCache = {}));
+    let geom = gCache[key];
+    if(!geom){ geom = createRoundedBoxGeometry(size, radius, 5); gCache[key] = geom; }
+    const mat = new THREE.MeshBasicMaterial({ map: tex });
+    return new THREE.Mesh(geom, mat);
   }
-
   return new THREE.Mesh(
     new THREE.SphereGeometry(5, 16, 16),
     new THREE.MeshBasicMaterial({ color: 0x00ff00 })
   );
 }
-// Re-register custom node object builder with sprite text logic
 Graph.nodeThreeObject(updateNodeObjects);
 // ==============================================================================
 
-// THEME STATE FOR GRAPH/NODE COLORS
-let currentBiancaColor = '#ff3366';
 function setGraphTheme(mode){
   if(mode === 'blue'){
     Graph.backgroundColor('#0d1b2a');
@@ -108,14 +127,13 @@ function setGraphTheme(mode){
     Graph.backgroundColor('#FEDCDB');
     currentBiancaColor = '#ff3366';
   }
-  // refresh node visuals
   Graph.nodeThreeObject(updateNodeObjects);
   if(typeof Graph.refresh === 'function'){ Graph.refresh(); }
-  // also ensure canvas element reflects color if library doesn't
   requestAnimationFrame(()=>{ const c=document.querySelector('#mindmap canvas'); if(c) c.style.background = (mode==='blue'?'#0d1b2a':'#FEDCDB'); });
+  console.log('Theme set', mode, 'nodes', Graph.graphData().nodes.map(n=>n.id));
 }
 
-// Initial theme setup`
+// Initial theme setup (removed stray backtick)
 setGraphTheme('light');
 
 // ignite button
