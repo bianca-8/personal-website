@@ -3,16 +3,14 @@ const Graph = ForceGraph3D()(document.getElementById("mindmap"))
   .graphData({
     nodes: [
   { id: "Bianca", group: 1, fx: 0, fy: 100, fz: 0},
-  { id: "Projects", group: 2, fx: -50, fy: 50, fz: 0, img: 'linkedin.png' },
-  { id: "Languages", group: 2, fx: 0, fy: 50, fz: 50, img: 'github.png' },
-  { id: "Hackathons", group: 2, fx: 50, fy: 50, fz: 0, img: 'linkedin.png' },
-  { id: "Hi", group: 2, fx: 25, fy: 75, fz: 50, img: 'linkedin.png' }
+  { id: "Piano", group: 2, fx: -50, fy: 50, fz: 0, img: 'assets/piano.png' },
+  { id: "Basketball", group: 2, fx: 0, fy: 50, fz: 50, img: 'assets/basketball.jpg' },
+  { id: "Soccer", group: 2, fx: 50, fy: 50, fz: 0, img: 'assets/soccer.jpg' },
     ],
     links: [
-      { source: "Bianca", target: "Projects" },
-      { source: "Bianca", target: "Languages" },
-      { source: "Bianca", target: "Hackathons" },
-      { source: "Bianca", target: "Hi" }
+      { source: "Bianca", target: "Piano" },
+      { source: "Bianca", target: "Basketball" },
+      { source: "Bianca", target: "Soccer" },
     ]
   })
   .nodeAutoColorBy("group")
@@ -30,6 +28,8 @@ const Graph = ForceGraph3D()(document.getElementById("mindmap"))
 Graph.linkColor(() => '#ffffff');
 Graph.linkWidth(() => 1);
 Graph.linkOpacity(() => 0.8); 
+Graph.backgroundColor('rgba(0,0,0,0)');
+try { Graph.renderer().setClearColor(0x000000, 0); } catch(e){}
 
 // ===================== TEXT SPRITE APPROACH (no FontLoader needed) =====================
 function makeTextSprite(text, { fontFace='Arial', fontSize=120, color='#ffffff', background='transparent', padding=20 }={}) {
@@ -165,24 +165,24 @@ function updateNodeObjects(node) {
   );
 }
 Graph.nodeThreeObject(updateNodeObjects);
-// ==============================================================================
 
 function setGraphTheme(mode){
   if(mode === 'blue'){
-    Graph.backgroundColor('#0d1b2a');
+    document.body.classList.add('blue-theme');
     currentBiancaColor = '#66b2ff';
   } else {
-    Graph.backgroundColor('#FEDCDB');
+    document.body.classList.remove('blue-theme');
     currentBiancaColor = '#ff3366';
   }
   Graph.nodeThreeObject(updateNodeObjects);
   if(typeof Graph.refresh === 'function'){ Graph.refresh(); }
-  requestAnimationFrame(()=>{ const c=document.querySelector('#mindmap canvas'); if(c) c.style.background = (mode==='blue'?'#0d1b2a':'#FEDCDB'); });
   console.log('Theme set', mode, 'nodes', Graph.graphData().nodes.map(n=>n.id));
 }
 
 // Initial theme setup (removed stray backtick)
 setGraphTheme('light');
+
+// ==============================================================================
 
 // ignite button
 (function(){
@@ -304,3 +304,61 @@ window.addEventListener('pointerup', ()=>{ lastX = lastY = null; });
 window.addEventListener('pointerleave', ()=>{ lastX = lastY = null; });
 // ------------------------------------------------
 })();
+
+// =============== Valentine Hearts (only Feb 14) ===============
+(function initValentineHearts(){
+  const today = new Date();
+  if(!(today.getMonth() === 1 && today.getDate() === 14)) return; // Only Feb 14
+  const container = document.getElementById('hearts-bg');
+  const mindmap = document.getElementById('mindmap');
+  if(!container || !mindmap || container.dataset.heartsInit) return;
+  container.dataset.heartsInit = '1';
+  const MAX = 80;
+  function positionHeart(h){
+    const mmRect = mindmap.getBoundingClientRect();
+    const baseline = mmRect.bottom;
+    h.style.left = (mmRect.left + Math.random()*mmRect.width) + 'px';
+    h.style.top = baseline + 'px';
+    h.style.visibility='hidden';
+    container.appendChild(h);
+    const rect = h.getBoundingClientRect();
+    h.style.top = (baseline - rect.height) + 'px';
+    h.style.visibility='visible';
+    const rise = baseline + 60;
+    h.style.setProperty('--rise', rise + 'px');
+  }
+  function makeHeart(){
+    const h = document.createElement('div');
+    h.className='heart';
+    const size = 12 + Math.random()*20;
+    h.style.setProperty('--h', size + 'px');
+    h.style.width = h.style.height = size + 'px';
+    h.style.setProperty('--s', (0.6 + Math.random()*0.9).toFixed(2));
+    const dur = 18 + Math.random()*16; // 18-34s
+    h.style.animationDuration = dur + 's';
+    h.style.animationDelay = (-Math.random()*dur) + 's';
+    positionHeart(h);
+    h.addEventListener('animationend', ()=> h.remove());
+  }
+  function spawn(){
+    const need = MAX - container.children.length;
+    if(need > 0){
+      const batch = Math.min(4, need);
+      for(let i=0;i<batch;i++) makeHeart();
+    }
+    requestAnimationFrame(()=>setTimeout(spawn, 1400));
+  }
+  window.addEventListener('resize', ()=>{
+    const mmRect = mindmap.getBoundingClientRect();
+    [...container.children].forEach(h=>{
+      const baseline = mmRect.bottom;
+      h.style.left = (mmRect.left + Math.random()*mmRect.width) + 'px';
+      const rect = h.getBoundingClientRect();
+      h.style.top = (baseline - rect.height) + 'px';
+      const rise = baseline + 60;
+      h.style.setProperty('--rise', rise + 'px');
+    });
+  });
+  spawn();
+})();
+// ==============================================================

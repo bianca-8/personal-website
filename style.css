@@ -186,7 +186,7 @@ body.blue-theme #igniteBtn:hover {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 0;
+  z-index: 1; /* raised above hearts */
 }
 
 .links {
@@ -293,3 +293,13 @@ body.blue-theme footer {
 /* Thin fire line + charred theme */
 body.charred { background:#000; color:#eee; }
 body.charred a { color:#66aaff; }
+
+/* Floating hearts background */
+#hearts-bg { position:fixed; inset:0; overflow:hidden; z-index:0; pointer-events:none; }
+.heart { position:absolute; width:var(--h,18px); height:var(--h,18px); background:#ff5d92; transform:rotate(-45deg); transform-origin:center; animation: floatUp linear forwards; opacity:.75; filter:drop-shadow(0 0 4px rgba(255,90,150,.55)); will-change:transform,opacity,top,left; }
+.heart:before, .heart:after { content:""; position:absolute; width:var(--h,18px); height:var(--h,18px); background:#ff5d92; border-radius:50%; }
+.heart:before { top:calc(-0.5 * var(--h,18px)); left:0; }
+.heart:after { left:calc(0.5 * var(--h,18px)); top:0; }
+body.blue-theme .heart { background:#ff79aa; }
+body.blue-theme .heart:before, body.blue-theme .heart:after { background:#ff79aa; }
+@keyframes floatUp { 0% { transform:translateY(0) rotate(-45deg) scale(var(--s,1)); opacity:0; } 10% { opacity:.7; } 90% { opacity:.65; } 100% { transform:translateY(-110vh) rotate(-45deg) scale(var(--s,1)); opacity:0; } }
