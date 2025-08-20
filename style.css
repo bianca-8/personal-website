@@ -154,7 +154,7 @@ body.blue-theme #igniteBtn:hover {
 @keyframes bubbleRise { 0% { transform:translateY(0) scale(.4); opacity:0; } 15% { opacity:.9; } 70% { opacity:.85; } 100% { transform:translateY(-140px) scale(1); opacity:0; } }
 
 .section {
-    margin-top: 3rem;
+    margin-top: 1rem;
     padding: 0.5rem;
 }
 
@@ -220,7 +220,6 @@ body.blue-theme #igniteBtn:hover {
 }
 
 #projects {
-    margin-top: 2em;
     display: flex;
     flex-wrap: wrap;
     gap: 1em;
