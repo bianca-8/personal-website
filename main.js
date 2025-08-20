@@ -308,7 +308,7 @@ window.addEventListener('pointerleave', ()=>{ lastX = lastY = null; });
 // =============== Valentine Hearts (only Feb 14) ===============
 (function initValentineHearts(){
   const today = new Date();
-  if(!(today.getMonth() === 1 && today.getDate() === 14)) return; // Only Feb 14
+  /*if(!(today.getMonth() === 1 && today.getDate() === 14)) return; // Only Feb 14*/
   const container = document.getElementById('hearts-bg');
   const mindmap = document.getElementById('mindmap');
   if(!container || !mindmap || container.dataset.heartsInit) return;

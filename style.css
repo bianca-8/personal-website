@@ -300,6 +300,6 @@ body.charred a { color:#66aaff; }
 .heart:before, .heart:after { content:""; position:absolute; width:var(--h,18px); height:var(--h,18px); background:#ff5d92; border-radius:50%; }
 .heart:before { top:calc(-0.5 * var(--h,18px)); left:0; }
 .heart:after { left:calc(0.5 * var(--h,18px)); top:0; }
-body.blue-theme .heart { background:#ff79aa; }
-body.blue-theme .heart:before, body.blue-theme .heart:after { background:#ff79aa; }
+body.blue-theme .heart { background:#4aa8ff; filter:drop-shadow(0 0 4px rgba(90,170,255,.55)); }
+body.blue-theme .heart:before, body.blue-theme .heart:after { background:#4aa8ff; }
 @keyframes floatUp { 0% { transform:translateY(0) rotate(-45deg) scale(var(--s,1)); opacity:0; } 10% { opacity:.7; } 90% { opacity:.65; } 100% { transform:translateY(-110vh) rotate(-45deg) scale(var(--s,1)); opacity:0; } }
