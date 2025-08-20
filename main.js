@@ -128,15 +128,27 @@ function createRoundedBoxGeometry(size, radius, segments = 4){
       group.add(layer);
     }
 
-    group.scale.set(0.11,0.11,0.11);
-    group.rotation.x = -0.15; 
-    group.rotation.y = 0.18;
+    group.scale.set(0.15,0.15,0.15); // larger initial scale
+    group.rotation.x = 0; // face straight on
+    group.rotation.y = 0;
     group.name = 'BiancaPseudo3D';
     window._bianca3DMesh = group; 
     window._lastBiancaColor = baseColor;
   };
   buildBiancaMesh();
 })();
+
+// (Removed per user request to not recenter)
+// After initial theme setup, move camera closer to Bianca for a larger start view
+// setTimeout(()=>{
+//   try {
+//     const biancaNode = Graph.graphData().nodes.find(n=>n.id==='Bianca');
+//     if(biancaNode){
+//       // Position camera somewhat in front on z axis looking at Bianca
+//       Graph.cameraPosition({ x: 0, y: biancaNode.y + 10, z: 180 }, { x: biancaNode.x, y: biancaNode.y, z: biancaNode.z }, 0);
+//     }
+//   } catch(e){}
+// }, 100);
 
 function updateNodeObjects(node) {
   if (node.id === "Bianca") {
@@ -361,4 +373,3 @@ window.addEventListener('pointerleave', ()=>{ lastX = lastY = null; });
   });
   spawn();
 })();
-// ==============================================================
