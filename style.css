@@ -219,6 +219,17 @@ body.blue-theme #igniteBtn:hover {
     transform: scale(1.2);
 }
 
+#about-me {
+    font-size: 1.2em;
+    line-height: 1.5;
+}
+
+#summary {
+    font-size: 1.2em;
+    line-height: 1.5;
+
+}
+
 #projects {
     display: flex;
     flex-wrap: wrap;
