@@ -6,11 +6,19 @@ const Graph = ForceGraph3D()(document.getElementById("mindmap"))
   { id: "Piano", group: 2, fx: -50, fy: 50, fz: 0, img: 'assets/piano.png' },
   { id: "Basketball", group: 2, fx: 0, fy: 50, fz: 50, img: 'assets/basketball.jpg' },
   { id: "Soccer", group: 2, fx: 50, fy: 50, fz: 0, img: 'assets/soccer.jpg' },
+  { id: "code", group: 2, fx: -50, fy: 125, fz: 15, img: 'assets/code.jpg' },
+  { id: "ib", group: 2, fx: 0, fy: 125, fz: -15, img: 'assets/ib.png' },
+  { id: "uoft", group: 2, fx: 75, fy: 75, fz: 10, img: 'assets/uoft.png' },
+  { id: "woss", group: 2, fx: 60, fy: 110, fz: 25, img: 'assets/woss.jpg' },
     ],
     links: [
       { source: "Bianca", target: "Piano" },
       { source: "Bianca", target: "Basketball" },
       { source: "Bianca", target: "Soccer" },
+      { source: "Bianca", target: "code" },
+      { source: "Bianca", target: "ib" },
+      { source: "Bianca", target: "uoft" },
+      { source: "Bianca", target: "woss" },
     ]
   })
   .nodeAutoColorBy("group")
