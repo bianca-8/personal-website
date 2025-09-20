@@ -356,6 +356,7 @@ window.addEventListener('pointerleave', ()=>{ lastX = lastY = null; });
     }
     requestAnimationFrame(()=>setTimeout(spawn, 1400));
   }
+  
   window.addEventListener('resize', ()=>{
     const mmRect = mindmap.getBoundingClientRect();
     [...container.children].forEach(h=>{
@@ -368,4 +369,148 @@ window.addEventListener('pointerleave', ()=>{ lastX = lastY = null; });
     });
   });
   spawn();
+  
+  // Simple status text scrolling
+  function initStatusScrolling() {
+    const statusText = document.getElementById('status-text');
+    const container = document.getElementById('status-text-container');
+    let animationFrame;
+    let startTime;
+    let isHovered = false;
+    
+    function scrollText() {
+      const now = Date.now();
+      const elapsed = startTime ? now - startTime : 0;
+      const cycleTime = 8000; // 8 seconds per full cycle
+      const progress = (elapsed % cycleTime) / cycleTime;
+      
+      const textWidth = statusText.scrollWidth;
+      const containerWidth = container.offsetWidth;
+      
+      if (textWidth <= containerWidth || isHovered) {
+        statusText.style.transform = 'translateX(0)';
+      } else {
+        const scrollDistance = textWidth - containerWidth;
+        let position;
+        
+        if (progress < 0.25) {
+          // First pause
+          position = 0;
+        } else if (progress < 0.5) {
+          // Scroll right
+          position = (progress - 0.25) * 4 * scrollDistance;
+        } else if (progress < 0.75) {
+          // Pause at end
+          position = scrollDistance;
+        } else {
+          // Scroll back
+          position = (1 - (progress - 0.75) * 4) * scrollDistance;
+        }
+        
+        statusText.style.transform = `translateX(-${position}px)`;
+      }
+      
+      if (!isHovered) {
+        animationFrame = requestAnimationFrame(scrollText);
+      }
+    }
+    
+    function startScrolling() {
+      if (!animationFrame) {
+        startTime = Date.now();
+        scrollText();
+      }
+    }
+    
+    // Event listeners
+    container.addEventListener('mouseenter', () => {
+      isHovered = true;
+      statusText.style.transform = 'translateX(0)';
+    });
+    
+    container.addEventListener('mouseleave', () => {
+      isHovered = false;
+      startScrolling();
+    });
+    
+    // Initialize
+    startScrolling();
+    
+    // Handle resize
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(startScrolling, 100);
+    });
+  }
+  
+  // Initialize status text scrolling with precise control
+  function initStatusScrolling() {
+    const statusText = document.getElementById('status-text');
+    const wrapper = document.getElementById('status-text-wrapper');
+    const container = document.getElementById('status-text-container');
+    
+    function updateScroll() {
+      const textWidth = statusText.offsetWidth;
+      const containerWidth = container.offsetWidth;
+      
+      if (textWidth > containerWidth) {
+        // Calculate the exact scroll distance needed
+        const scrollDistance = textWidth - containerWidth;
+        const duration = Math.max(5, scrollDistance / 30); // Adjust speed factor as needed
+        
+        const keyframes = `
+          @keyframes scrollText {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-${scrollDistance}px); }
+          }
+          
+          #status-text-wrapper {
+            animation: scrollText ${duration}s linear infinite;
+            padding-right: 20px; /* Add some space at the end */
+          }
+        `;
+        
+        // Remove old style if exists
+        const oldStyle = document.getElementById('scroll-animation-style');
+        if (oldStyle) oldStyle.remove();
+        
+        // Add new style
+        const style = document.createElement('style');
+        style.id = 'scroll-animation-style';
+        style.textContent = keyframes;
+        document.head.appendChild(style);
+        
+        // Ensure wrapper is visible and properly sized
+        wrapper.style.display = 'inline-block';
+        wrapper.style.whiteSpace = 'nowrap';
+      } else {
+        // If text fits, make sure it's not scrolling
+        wrapper.style.animation = 'none';
+        wrapper.style.transform = 'translateX(0)';
+      }
+    }
+    
+    // Initial setup
+    updateScroll();
+    
+    // Handle hover
+    container.addEventListener('mouseenter', () => {
+      wrapper.style.animationPlayState = 'paused';
+    });
+    
+    container.addEventListener('mouseleave', () => {
+      wrapper.style.animationPlayState = 'running';
+    });
+    
+    // Handle window resize
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(updateScroll, 100);
+    });
+  }
+  
+  // Start when the page loads
+  window.addEventListener('load', initStatusScrolling);
 })();

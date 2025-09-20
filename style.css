@@ -55,6 +55,25 @@ body.blue-theme #igniteBtn:hover {
     background:#0b2a42;
 }
 
+/* Update status bar in blue theme */
+body.blue-theme #status-bar {
+    background-color: rgba(16, 53, 82, 0.2);
+    border-bottom: 1px solid rgba(29, 77, 114, 0.3);
+}
+
+/* Update status bar text in blue theme */
+body.blue-theme #status-bar span,
+body.blue-theme #status-text {
+    color: #66b2ff;
+    text-shadow: 0 0 8px rgba(26, 117, 255, 0.4);
+}
+
+/* Update status text border in blue theme */
+body.blue-theme #status-text {
+    border-bottom-color: rgba(26, 117, 255, 0.5);
+    font-weight: 600;  /* Slightly bolder for better visibility */
+}
+
 /* Burn overlay */
 #burn-overlay {
     position:fixed;
@@ -187,6 +206,95 @@ body.blue-theme #igniteBtn:hover {
   width: 100%;
   height: 100%;
   z-index: 1; /* raised above hearts */
+}
+
+/* Status Bar */
+#status-bar {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 10px 20px;
+  border-radius: 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  font-family: 'Happy Monkey', cursive;
+  font-size: 14px;
+  color: #333;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  max-width: 300px;
+  overflow: hidden;
+  white-space: nowrap;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+
+#status-bar span:first-child {
+  font-weight: bold;
+  color: #ff3366;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-right: 10px;
+}
+
+#status-text-container {
+  display: inline-block;
+  vertical-align: middle;
+  width: 200px;
+  margin-left: 5px;
+  overflow: hidden;
+  position: relative;
+  height: 1.4em;
+}
+
+#status-text {
+  color: #ed88a1;
+  font-weight: 500;
+  border-bottom: 1px dashed rgba(0, 119, 204, 0.3);
+  white-space: nowrap;
+}
+
+/* Make sure the text is always on a single line */
+#status-bar, #status-text {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+}
+
+/* Smaller screens */
+@media (max-width: 768px) {
+  #status-bar {
+    max-width: 250px;
+    padding: 8px 15px;
+    font-size: 12px;
+  }
+}
+
+/* Add a subtle hover effect */
+#status-bar:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+#status-text:empty:before {
+  content: attr(placeholder);
+  color: #888;
+  cursor: text;
+}
+
+#save-status {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+#save-status:hover {
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .links {
