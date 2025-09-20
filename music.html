@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music - Bianca</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="logo">Bianca</a>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+  
+  <main>
+    <div class="section">
+      <h1>Music</h1>
+
+      <p>
+        I have played piano for <span id="pianoYears"></span> years and taught piano for 3 years from 2022-2025.
+      </p>
+
+      <script>
+        const startYear = 2012;
+        const currentYear = new Date().getFullYear();
+        const yearsPlaying = currentYear - startYear;
+        document.getElementById('pianoYears').textContent = yearsPlaying;
+      </script>
+
+      <h2>Achievements</h2>
+      <ul>
+        <li>Level 9 Royal Conservatory of Music Piano</li>
+        <li>Level 9 Royal Conservatory of Music Harmony</li>
+        <li>3 First places, five second places, five third places in Music Fest Ontario from 2017-2023</li>
+      </ul>
+    </div>
+  </main>
+
+  <footer>
+    <p><a href="index.html" class="footerLinks">← Back to Home</a></p>
+    <p>© 2025 Bianca. All rights reserved.</p>
+  </footer>
+</body>
+</html>

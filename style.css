@@ -201,6 +201,15 @@ body.blue-theme #igniteBtn:hover {
     transform: scale(1.2);
 }
 
+.footerLinks {
+    text-decoration: none;
+    color: #666;
+    transition: color 0.3s;
+}
+.footerLinks:hover {
+    color: #333;
+}
+
 .links {
     display: inline-flex;
     align-items: center;
