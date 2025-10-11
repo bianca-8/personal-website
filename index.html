@@ -15,21 +15,26 @@
     <script src="main.js" defer></script>
   </head>
   <body>
-    <div id="status-bar">
-      <span>Current Shenanigans: </span>
-      <div id="status-text-container">
-        <marquee id="status-text" scrollamount="2">
-          Dropping in on 3rd year math&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        </marquee>
+    <div id="top-row">
+      <div id="status-bar">
+        <span>Current Shenanigans: </span>
+        <div id="status-text-container">
+          <marquee id="status-text" scrollamount="2">
+            Dropping in on 3rd year math&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </marquee>
+        </div>
+      </div>
+      <div id="ignite-container">
+        <button id="igniteBtn" type="button" aria-controls="burn-overlay">
+          Ignite Theme
+        </button>
       </div>
     </div>
+    
     <div id="hearts-bg"></div>
     <header id="hero">
         <div id="mindmap"></div>
-      <!-- Added ignite button -->
-      <button id="igniteBtn" type="button" aria-controls="burn-overlay">
-        Ignite Theme
-      </button>
+      
     </header>
     <!-- Burn overlay element -->
     <div id="burn-overlay" aria-hidden="true"></div>
@@ -58,17 +63,18 @@
            add a block for coding + math
            uoft, woss, ib
            -->
-          I am a computer science student at the University of Toronto. I love solving problems and learning new things!
+          I am a computer science, math and business student at the University of Toronto. I love solving problems and learning new things!
         </div>    
+        <div class="section">
+          <div id="summary">
+            <h1>Summary</h1>
+            </div>
+            <ul>
+              <li>3x hackathon winner ($300+ in prizes)</li>
+              <li>2x DECA International (ICDC) Qualifier</li>
+            </ul>
         </div>
-        <div id="summary">
-          Summary
-          <ul>
-            <li>3x hackathon winner ($300+ in prizes)</li>
-            <li>2x DECA International (ICDC) Qualifier</li>
-          </ul>
-        </div>
-      </div>
+      
       <div class="section">
         <h1>Projects</h1>
         <div id="projects">
@@ -171,10 +177,10 @@
       <div class="section">
         <h1>Writing</h1>
         <ul>
-          <li>Math IA</li>
-          <li>EE</li>
-          <li>Business IA</li>
-          <li>Physics IA</li>
+          <li><a href="math_ia.html" class="footerLinks">Math IA</a></li>
+          <li><a href="ee.html" class="footerLinks">EE</a></li>
+          <li><a href="business_ia.html" class="footerLinks">Business IA</a></li>
+          <li><a href="physics_ia.html" class="footerLinks">Physics IA</a></li>
         </ul>
       </div>
       <div class="section">

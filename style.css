@@ -29,9 +29,9 @@ body.blue-theme a {
 
 /* Ignite button */
 #igniteBtn {
-    position:fixed;
-    top:12px;
-    right:12px;
+    position: relative;
+    float: right;
+    margin-right: 1vw;
     background:#222;
     color:#fff;
     border:1px solid #444;
@@ -210,9 +210,8 @@ body.blue-theme #status-text {
 
 /* Status Bar */
 #status-bar {
-  position: fixed;
-  top: 20px;
-  left: 20px;
+  position: relative;
+  margin-left: 1vw;
   background-color: rgba(255, 255, 255, 0.9);
   padding: 10px 20px;
   border-radius: 30px;
@@ -229,6 +228,26 @@ body.blue-theme #status-text {
   box-sizing: border-box;
   display: flex;
   align-items: center;
+}
+
+/* Top row wrapper holding status bar and ignite button */
+#top-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#ignite-container {
+    display: flex;
+    align-items: center;
+    margin-left: auto; /* push container to the far right of top-row */
+}
+
+/* Ensure button does not inherit status bar text styles */
+#igniteBtn {
+    color: #fff;
+    text-shadow: none;
+    background:#222;
 }
 
 #status-bar span:first-child {
