@@ -10,6 +10,15 @@ const Graph = ForceGraph3D()(document.getElementById("mindmap"))
   { id: "ib", group: 2, fx: 0, fy: 125, fz: -15, img: 'assets/ib.png' },
   { id: "uoft", group: 2, fx: 75, fy: 75, fz: 10, img: 'assets/uoft.png' },
   { id: "woss", group: 2, fx: 60, fy: 110, fz: 25, img: 'assets/woss.jpg' },
+  { id: "deca", group: 2, fx: -50, fy: 50, fz: 0, img: 'assets/deca.png' },
+  { id: "fblc", group: 2, fx: -50, fy: 50, fz: 0, img: 'assets/fblc.jpeg' },
+  { id: "tu20", group: 2, fx: 0, fy: 50, fz: 50, img: 'assets/tu20.jpg' },
+  { id: "cssc", group: 2, fx: 50, fy: 50, fz: 0, img: 'assets/cssc.png' },
+  { id: "python", group: 2, fx: -50, fy: 125, fz: 15, img: 'assets/python.png' },
+  { id: "java", group: 2, fx: 0, fy: 125, fz: -15, img: 'assets/java.png' },
+  { id: "html", group: 2, fx: 75, fy: 75, fz: 10, img: 'assets/html.png' },
+  { id: "css", group: 2, fx: 60, fy: 110, fz: 25, img: 'assets/css.png' },
+  { id: "js", group: 2, fx: 60, fy: 110, fz: 25, img: 'assets/js.png' },
     ],
     links: [
       { source: "Bianca", target: "Piano" },
@@ -19,6 +28,15 @@ const Graph = ForceGraph3D()(document.getElementById("mindmap"))
       { source: "Bianca", target: "ib" },
       { source: "Bianca", target: "uoft" },
       { source: "Bianca", target: "woss" },
+      { source: "Bianca", target: "deca" },
+      { source: "Bianca", target: "fblc" },
+      { source: "Bianca", target: "tu20" },
+      { source: "Bianca", target: "cssc" },
+      { source: "Bianca", target: "python" },
+      { source: "Bianca", target: "java" },
+      { source: "Bianca", target: "html" },
+      { source: "Bianca", target: "css" },
+      { source: "Bianca", target: "js" },
     ]
   })
   .nodeAutoColorBy("group")
