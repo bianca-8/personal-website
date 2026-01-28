@@ -172,15 +172,31 @@ body.blue-theme #status-text {
 .bubble { position:absolute; bottom:0; width:18px; height:18px; border-radius:50%; background:radial-gradient(circle at 30% 30%, rgba(255,255,255,.9) 0%, rgba(200,240,255,.55) 60%, rgba(255,255,255,0) 70%); opacity:0; animation: bubbleRise 1.8s ease-in forwards; mix-blend-mode:screen; }
 @keyframes bubbleRise { 0% { transform:translateY(0) scale(.4); opacity:0; } 15% { opacity:.9; } 70% { opacity:.85; } 100% { transform:translateY(-140px) scale(1); opacity:0; } }
 
+#aboutme {
+    margin-left: 1.5em;
+}
+
 .section {
     margin-top: 1rem;
-    padding: 0.5rem;
 }
 
 .section h1 {
     font-family: 'title', sans-serif;
     font-weight: 50;
+    margin-top: 1em;
+    margin-bottom: 0.25em;
 }
+
+.section ul {
+    list-style-type: disc;
+    margin-left: 1.5em;
+}
+
+.section li {
+    margin-bottom: 0.5em;
+}
+
+.section 
 
 #title {
     font-size: 2.5em;

@@ -12,13 +12,27 @@
         <a href="index.html">← Home</a>
       </nav>
     </header>
-    <main class="section">
-      <h1>Physics IA</h1>
-      <p>Experiment notes, data logging, and analysis for the Physics IA.</p>
-      <section>
-        <h2>Experiment</h2>
-        <p>Describe apparatus, method, and record results here.</p>
-      </section>
+   <main class="section">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:16px;padding:24px 12px;">
+        <h1 style="text-align:center;margin:0;">Physics IA</h1>
+        <iframe
+          src="files/Physics IA.pdf"
+          style="width:80%;max-width:1100px;height:90vh;border:none;border-radius:6px;box-shadow:0 6px 20px rgba(0,0,0,0.08);"
+          title="Physics IA PDF">
+        </iframe>
+      </div>
+      <div style="display:flex;justify-content:center;align-items:center;padding:16px;">
+        <iframe
+          id="player"
+          type="text/html"
+          width="640"
+          height="390"
+          src="https://www.youtube.com/embed/z7Y6FjHwofg?enablejsapi=1&origin=http://example.com"
+          frameborder="0"
+          style="display:block;max-width:100%;"
+          allowfullscreen>
+        </iframe>
+      </div>
     </main>
     <footer>
       <p><a href="index.html">Back to Home</a></p>
