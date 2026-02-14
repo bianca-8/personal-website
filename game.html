@@ -101,16 +101,15 @@
         }
 
         restartBtn.addEventListener("click", () => {
-            // reset
             dots = [];
             currentPlayer = "black";
+            gameOver = false;
+            endMessage = "";
             gameMessage.textContent = "";
-            restartBtn.style.display = "none";
             
-            canvas.addEventListener("click", click);
-
             draw();
         });
+
 
 
         function checkWin(row, col, color) {

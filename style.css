@@ -466,8 +466,7 @@ body.charred a { color:#66aaff; }
 
 .restartBox {
     display: inline-block;
-    padding: 10px 10px;
-    margin: 10px 0;
+    padding: 10px 20px;
     background-color: #d48fd1;
     color: white;
     font-size: 18px;
@@ -478,7 +477,7 @@ body.charred a { color:#66aaff; }
     user-select: none;
 }
 .restartBox:hover {
-    background-color: #d48fd1;
+    background-color: #bd70ba;
 }
 
 /* Floating hearts background */
