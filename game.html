@@ -16,19 +16,39 @@
     </style>
   </head>
   <body>
-    <canvas id="myCanvas" width="480" height="320"></canvas>
+    <canvas id="myCanvas" width="800" height="800"></canvas>
 
     <script>
         const canvas = document.getElementById("myCanvas");
-        canvas.addEventListener("click", drawDot);
         const ctx = canvas.getContext("2d");
         const dotRadius = 10;
+        const gridSize = 20;
+        const cellSize = canvas.width / gridSize;
+
         let dots = [];
-        let rightPressed = false;
-        let leftPressed = false;
-        let interval = 0;
-        
-        ctx.beginPath();
+
+        canvas.addEventListener("click", drawDot);
+
+        function drawGrid() {
+            ctx.strokeStyle = "#ccc";
+            ctx.lineWidth = 1;
+
+            for (let i = 0; i <= gridSize; i++) {
+                let pos = i * cellSize;
+
+                // vertical line
+                ctx.beginPath();
+                ctx.moveTo(pos, 0);
+                ctx.lineTo(pos, canvas.height);
+                ctx.stroke();
+
+                // horizontal line
+                ctx.beginPath();
+                ctx.moveTo(0, pos);
+                ctx.lineTo(canvas.width, pos);
+                ctx.stroke();
+            }
+        }
 
         function drawDot(e) {
             const rect = canvas.getBoundingClientRect();
@@ -36,6 +56,18 @@
             const y = e.clientY - rect.top;
 
             dots.push({ x, y });
+        }
+
+        function handleClick(e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const gridX = Math.round(x / cellSize) * cellSize; // snap to grid
+            const gridY = Math.round(y / cellSize) * cellSize;
+
+            dots.push({ x: gridX, y: gridY });
+            draw();
         }
 
         function drawDots() {
@@ -54,108 +86,10 @@
 
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawGrid();
             drawDots();
         }
-
-        interval = setInterval(draw, 10);
-
-        /*
-        const canvas = document.getElementById("myCanvas");
-        const ctx = canvas.getContext("2d");
-        const ballRadius = 10;
-        const paddleHeight = 10;
-        const paddleWidth = 75;
-        let paddleX = (canvas.width - paddleWidth) / 2;
-        let rightPressed = false;
-        let leftPressed = false;
-        let interval = 0;
-
-        ctx.beginPath();
-        ctx.rect(20, 40, 50, 50);
-        ctx.fillStyle = "red";
-        ctx.fill();
-        ctx.closePath();
-
-        ctx.beginPath();
-        ctx.arc(240, 160, 20, 0, Math.PI * 2, false);
-        ctx.fillStyle = "green";
-        ctx.fill();
-        ctx.closePath();
-
-        ctx.beginPath();
-        ctx.rect(160, 10, 100, 40);
-        ctx.strokeStyle = "rgb(0 0 255 / 50%)";
-        ctx.stroke();
-        ctx.closePath();
-
-        let x = canvas.width / 2;
-        let y = canvas.height - 30;
-        let dx = 2;
-        let dy = -2;
-        function drawBall() {
-            ctx.beginPath();
-            ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-            ctx.fillStyle = "#0095DD";
-            ctx.fill();
-            ctx.closePath();
-        }
-
-        function drawPaddle() {
-            ctx.beginPath();
-            ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
-            ctx.fillStyle = "#0095DD";
-            ctx.fill();
-            ctx.closePath();
-        }
-
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawBall();
-            drawPaddle();
-            x += dx;
-            y += dy;
-
-            if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
-            dx = -dx;
-            }
-            if (y + dy < ballRadius) {
-                dy = -dy;
-            } else if (y + dy > canvas.height - ballRadius) {
-                if (x > paddleX && x < paddleX + paddleWidth) {
-                    dy = -dy;
-                } else {
-                    alert("GAME OVER");
-                    document.location.reload();
-                    clearInterval(interval);
-                }
-            }
-
-            if (rightPressed) {
-            paddleX = Math.min(paddleX + 7, canvas.width - paddleWidth);
-            } else if (leftPressed) {
-            paddleX = Math.max(paddleX - 7, 0);
-            }
-        }
-
-        document.addEventListener("keydown", keyDownHandler);
-        document.addEventListener("keyup", keyUpHandler);
-
-        function keyDownHandler(e) {
-        if (e.key === "Right" || e.key === "ArrowRight") {
-            rightPressed = true;
-        } else if (e.key === "Left" || e.key === "ArrowLeft") {
-            leftPressed = true;
-        }
-        }
-
-        function keyUpHandler(e) {
-        if (e.key === "Right" || e.key === "ArrowRight") {
-            rightPressed = false;
-        } else if (e.key === "Left" || e.key === "ArrowLeft") {
-            leftPressed = false;
-        }
-        }
-        interval = setInterval(draw, 10);*/
+        draw();
 
     </script>
   </body>
