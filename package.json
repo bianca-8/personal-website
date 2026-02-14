@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "http-server ."
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -15,9 +14,6 @@
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/bianca-8/personal-website/issues"
-  },
-  "devDependencies": {
-    "vite": "^7.3.1"
   },
   "homepage": "https://github.com/bianca-8/personal-website#readme",
   "description": "",
