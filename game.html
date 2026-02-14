@@ -16,7 +16,7 @@
     </style>
   </head>
   <body>
-    <canvas id="myCanvas" width="800" height="800"></canvas>
+    <canvas id="myCanvas" width="760" height="760"></canvas>
 
     <script>
         const canvas = document.getElementById("myCanvas");
@@ -27,7 +27,7 @@
 
         let dots = [];
 
-        canvas.addEventListener("click", drawDot);
+        canvas.addEventListener("click", click);
 
         function drawGrid() {
             ctx.strokeStyle = "#ccc";
@@ -58,7 +58,7 @@
             dots.push({ x, y });
         }
 
-        function handleClick(e) {
+        function click(e) {
             const rect = canvas.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
