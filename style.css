@@ -464,7 +464,7 @@ body.charred a { color:#66aaff; }
     min-height: 100vh;
 }
 
-.restartBox {
+.button {
     display: inline-block;
     padding: 10px 20px;
     background-color: #d48fd1;
@@ -476,7 +476,7 @@ body.charred a { color:#66aaff; }
     cursor: pointer;
     user-select: none;
 }
-.restartBox:hover {
+.button:hover {
     background-color: #bd70ba;
 }
 
