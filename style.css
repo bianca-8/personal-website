@@ -456,12 +456,29 @@ body.blue-theme footer {
 body.charred { background:#000; color:#eee; }
 body.charred a { color:#66aaff; }
 
-#game {
+#Game {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
+}
+
+.restartBox {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 10px 0;
+    background-color: #4CAF50; /* green */
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    user-select: none; /* prevent text selection on click */
+}
+.restartBox:hover {
+    background-color: #45a049;
 }
 
 /* Floating hearts background */
