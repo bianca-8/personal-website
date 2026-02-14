@@ -22,7 +22,7 @@
         const canvas = document.getElementById("myCanvas");
         const ctx = canvas.getContext("2d");
         const dotRadius = 10;
-        const gridSize = 20;
+        const gridSize = 19;
         const cellSize = canvas.width / gridSize;
 
         let dots = [];
@@ -55,7 +55,7 @@
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
 
-            dots.push({ x, y });
+            dots.push({ row, col });
         }
 
         function click(e) {
@@ -63,17 +63,21 @@
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
 
-            const gridX = Math.round(x / cellSize) * cellSize; // snap to grid
-            const gridY = Math.round(y / cellSize) * cellSize;
+            const col = Math.round(x / cellSize);
+            const row = Math.round(y / cellSize);
 
-            dots.push({ x: gridX, y: gridY });
-            draw();
+            const alreadyExists = dots.some(d => d.row === row && d.col === col);
+
+            if (!alreadyExists) {
+                dots.push({ row, col });
+                draw();
+            }
         }
 
         function drawDots() {
             for (const d of dots) {
                 ctx.beginPath();
-                ctx.arc(d.x, d.y, dotRadius, 0, Math.PI * 2);
+                ctx.arc(d.col * cellSize, d.row * cellSize, dotRadius, 0, Math.PI * 2);
                 if (dots.indexOf(d) % 2 === 0) {
                     ctx.fillStyle = "black";
                 } else {
