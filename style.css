@@ -456,6 +456,14 @@ body.blue-theme footer {
 body.charred { background:#000; color:#eee; }
 body.charred a { color:#66aaff; }
 
+#game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
 /* Floating hearts background */
 #hearts-bg { position:fixed; inset:0; overflow:hidden; z-index:0; pointer-events:none; }
 .heart { position:absolute; width:var(--h,18px); height:var(--h,18px); background:#ff5d92; transform:rotate(-45deg); transform-origin:center; animation: floatUp linear forwards; opacity:.75; filter:drop-shadow(0 0 4px rgba(255,90,150,.55)); will-change:transform,opacity,top,left; }

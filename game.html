@@ -15,12 +15,11 @@
     </div>
   </nav>
 
-    <div id="gameMessage" style="text-align:center; margin:10px; font-size:24px;"></div>
-    <button id="restartBtn" style="margin:auto; display:block;">Restart Game</button>
-
-
-    <canvas id="myCanvas" width="760" height="760"></canvas>
-
+    <div id="Game">
+        <div id="gameMessage" style="text-align:center; margin:10px; font-size:24px;"></div>
+        <button id="restartBtn" style="margin:auto; display:block;">Restart Game</button>
+        <canvas id="myCanvas" width="760" height="760"></canvas>
+    </div>
 
     <script>
         const canvas = document.getElementById("myCanvas");
@@ -34,7 +33,7 @@
         const restartBtn = document.getElementById("restartBtn");
 
         let gameOver = false;
-        let endMessage = ""; // store "Black wins", "White wins", or "Tie"
+        let endMessage = "";
         let dots = [];
         let currentPlayer = "black";
 
@@ -66,8 +65,12 @@
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
 
-            const col = Math.round((x - padding) / cellSize);
-            const row = Math.round((y - padding) / cellSize);
+            let col = Math.round((x - padding) / cellSize);
+            let row = Math.round((y - padding) / cellSize);
+            if (col < 0) col = 0;
+            if (col > gridSize) col = gridSize;
+            if (row < 0) row = 0;
+            if (row > gridSize) row = gridSize;
 
             const alreadyExists = dots.some(d => d.row === row && d.col === col);
 
