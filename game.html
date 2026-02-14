@@ -17,7 +17,7 @@
   </head>
   <body>
     <div id="gameMessage" style="text-align:center; margin:10px; font-size:24px;"></div>
-    <button id="restartBtn" style="display:none; margin:auto; display:block;">Restart Game</button>
+   <button id="restartBtn" style="margin:auto; display:none;">Restart Game</button>
 
     <canvas id="myCanvas" width="760" height="760"></canvas>
 
@@ -67,24 +67,20 @@
 
             const alreadyExists = dots.some(d => d.row === row && d.col === col);
 
-            if (!alreadyExists) {
-                const gameMessage = document.getElementById("gameMessage");
-                const restartBtn = document.getElementById("restartBtn");
+            const gameMessage = document.getElementById("gameMessage");
+            const restartBtn = document.getElementById("restartBtn");
 
+            if (!alreadyExists) {
                 dots.push({ row, col, color: currentPlayer });
 
                 // win
                 if (checkWin(row, col, currentPlayer)) {
                     gameMessage.textContent = currentPlayer.toUpperCase() + " wins!";
-                    restartBtn.style.display = "block";
-                    canvas.removeEventListener("click", click);
                     endGame();
                 } 
                 // tie
                 else if (dots.length === maxPieces) {
                     gameMessage.textContent = "It's a tie!";
-                    restartBtn.style.display = "block";
-                    canvas.removeEventListener("click", click);
                     endGame();
                 } 
                 else {
