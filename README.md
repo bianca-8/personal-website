@@ -1,1 +1,3 @@
-readme
+This is my personal website! It's a work in progress...
+
+There's also my favourite game, 5 in a row at the bottom!
