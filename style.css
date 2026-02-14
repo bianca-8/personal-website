@@ -466,19 +466,19 @@ body.charred a { color:#66aaff; }
 
 .restartBox {
     display: inline-block;
-    padding: 10px 20px;
+    padding: 10px 10px;
     margin: 10px 0;
-    background-color: #4CAF50; /* green */
+    background-color: #d48fd1;
     color: white;
     font-size: 18px;
     font-weight: bold;
     text-align: center;
     border-radius: 5px;
     cursor: pointer;
-    user-select: none; /* prevent text selection on click */
+    user-select: none;
 }
 .restartBox:hover {
-    background-color: #45a049;
+    background-color: #d48fd1;
 }
 
 /* Floating hearts background */
