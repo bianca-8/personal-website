@@ -20,17 +20,16 @@
 
     <script>
         const canvas = document.getElementById("myCanvas");
+        canvas.addEventListener("click", drawDot);
         const ctx = canvas.getContext("2d");
         const dotRadius = 10;
+        let dots = [];
         const myInput = document.getElementById('username');
         let rightPressed = false;
         let leftPressed = false;
         let interval = 0;
         
         ctx.beginPath();
-
-        document.addEventListener("keydown", keyDownHandler);
-        document.addEventListener("keyup", keyUpHandler);
 
         function inputKeyPress () {
             const e = new KeyboardEvent('keypress');
@@ -41,50 +40,29 @@
             console.log('input received keypress:', e);
         });
 
+        function drawDot(e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            dots.push({ x, y });
+        }
+
+        function drawDots() {
+            for (const d of dots) {
+                ctx.beginPath();
+                ctx.arc(d.x, d.y, dotRadius, 0, Math.PI * 2);
+                ctx.fillStyle = "black";
+                ctx.fill();
+                ctx.closePath();
+            }
+        }
+
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawBall();
-            drawPaddle();
-            x += dx;
-            y += dy;
-
-            if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
-            dx = -dx;
-            }
-            if (y + dy < ballRadius) {
-                dy = -dy;
-            } else if (y + dy > canvas.height - ballRadius) {
-                if (x > paddleX && x < paddleX + paddleWidth) {
-                    dy = -dy;
-                } else {
-                    alert("GAME OVER");
-                    document.location.reload();
-                    clearInterval(interval);
-                }
-            }
-
-            if (rightPressed) {
-            paddleX = Math.min(paddleX + 7, canvas.width - paddleWidth);
-            } else if (leftPressed) {
-            paddleX = Math.max(paddleX - 7, 0);
-            }
+            drawDots();
         }
 
-        function keyDownHandler(e) {
-        if (e.key === "Right" || e.key === "ArrowRight") {
-            rightPressed = true;
-        } else if (e.key === "Left" || e.key === "ArrowLeft") {
-            leftPressed = true;
-        }
-        }
-
-        function keyUpHandler(e) {
-        if (e.key === "Right" || e.key === "ArrowRight") {
-            rightPressed = false;
-        } else if (e.key === "Left" || e.key === "ArrowLeft") {
-            leftPressed = false;
-        }
-        }
         interval = setInterval(draw, 10);
 
         /*
