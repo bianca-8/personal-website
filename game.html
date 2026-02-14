@@ -84,6 +84,7 @@
                         currentPlayer = "black";
                     }
                 draw();
+                }
             }
         }
 
@@ -99,14 +100,14 @@
             for (const {dr, dc} of directions) {
                 let count = 1;
 
-                // Check forward
+                // check forward
                 for (let i = 1; i < 5; i++) {
                     if (dots.some(d => d.row === row + dr*i && d.col === col + dc*i && d.color === color)) {
                         count++;
                     } else break;
                 }
 
-                // Check backward
+                // check backward
                 for (let i = 1; i < 5; i++) {
                     if (dots.some(d => d.row === row - dr*i && d.col === col - dc*i && d.color === color)) {
                         count++;
