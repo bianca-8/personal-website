@@ -42,7 +42,11 @@
             for (const d of dots) {
                 ctx.beginPath();
                 ctx.arc(d.x, d.y, dotRadius, 0, Math.PI * 2);
-                ctx.fillStyle = "black";
+                if (dots.indexOf(d) % 2 === 0) {
+                    ctx.fillStyle = "black";
+                } else {
+                    ctx.fillStyle = "white";
+                }
                 ctx.fill();
                 ctx.closePath();
             }
