@@ -56,6 +56,8 @@
         }
 
         function click(e) {
+            if (gameOver) return;
+
             const rect = canvas.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
@@ -73,17 +75,15 @@
                 dots.push({ row, col, color: currentPlayer });
                 // win
                 if (checkWin(row, col, currentPlayer)) {
-                endGame(currentPlayer.toUpperCase() + " wins!");
+                    endGame(currentPlayer.toUpperCase() + " wins!");
+                } 
                 // tie
-                } else if (dots.length === maxPieces) {
+                else if (dots.length === maxPieces) {
                     endGame("It's a tie!");
-                } else {
+                } 
+                else {
                     // switch player
-                    if (currentPlayer === "black") {
-                        currentPlayer = "white";
-                    } else {
-                        currentPlayer = "black";
-                    }
+                    currentPlayer = currentPlayer === "black" ? "white" : "black";
                     draw();
                 }
             }
