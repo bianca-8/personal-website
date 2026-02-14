@@ -16,7 +16,11 @@
     </style>
   </head>
   <body>
+    <div id="gameMessage" style="text-align:center; margin:10px; font-size:24px;"></div>
+    <button id="restartBtn" style="display:none; margin:auto; display:block;">Restart Game</button>
+
     <canvas id="myCanvas" width="760" height="760"></canvas>
+
 
     <script>
         const canvas = document.getElementById("myCanvas");
@@ -64,17 +68,24 @@
             const alreadyExists = dots.some(d => d.row === row && d.col === col);
 
             if (!alreadyExists) {
+                const gameMessage = document.getElementById("gameMessage");
+                const restartBtn = document.getElementById("restartBtn");
+
                 dots.push({ row, col, color: currentPlayer });
 
                 // win
                 if (checkWin(row, col, currentPlayer)) {
-                    alert(currentPlayer.toUpperCase() + " wins!");
+                    gameMessage.textContent = currentPlayer.toUpperCase() + " wins!";
+                    restartBtn.style.display = "block";
                     canvas.removeEventListener("click", click);
+                    endGame();
                 } 
                 // tie
                 else if (dots.length === maxPieces) {
-                    alert("It's a tie!");
+                    gameMessage.textContent = "It's a tie!";
+                    restartBtn.style.display = "block";
                     canvas.removeEventListener("click", click);
+                    endGame();
                 } 
                 else {
                     // other player
@@ -87,6 +98,24 @@
                 }
             }
         }
+
+        function endGame() {
+            canvas.removeEventListener("click", click);
+            restartBtn.style.display = "block";
+        }
+
+        restartBtn.addEventListener("click", () => {
+            // reset
+            dots = [];
+            currentPlayer = "black";
+            gameMessage.textContent = "";
+            restartBtn.style.display = "none";
+            
+            canvas.addEventListener("click", click);
+
+            draw();
+        });
+
 
         function checkWin(row, col, color) {
             // Directions: horizontal, vertical, diagonal1, diagonal2
