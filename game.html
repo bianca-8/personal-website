@@ -23,9 +23,12 @@
         const ctx = canvas.getContext("2d");
         const dotRadius = 10;
         const gridSize = 19;
-        const cellSize = canvas.width / gridSize;
+        const cellSize = canvas.width / (gridSize-1);
+        const maxPieces = (gridSize + 1) * (gridSize + 1);
+
 
         let dots = [];
+        let currentPlayer = "black";
 
         canvas.addEventListener("click", click);
 
@@ -50,14 +53,6 @@
             }
         }
 
-        function drawDot(e) {
-            const rect = canvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-
-            dots.push({ row, col });
-        }
-
         function click(e) {
             const rect = canvas.getBoundingClientRect();
             const x = e.clientX - rect.left;
@@ -69,20 +64,67 @@
             const alreadyExists = dots.some(d => d.row === row && d.col === col);
 
             if (!alreadyExists) {
-                dots.push({ row, col });
+                dots.push({ row, col, color: currentPlayer });
+
+                // win
+                if (checkWin(row, col, currentPlayer)) {
+                    alert(currentPlayer.toUpperCase() + " wins!");
+                    canvas.removeEventListener("click", click);
+                } 
+                // tie
+                else if (dots.length === maxPieces) {
+                    alert("It's a tie!");
+                    canvas.removeEventListener("click", click);
+                } 
+                else {
+                    // other player
+                    if (currentPlayer === "black") {
+                        currentPlayer = "white";
+                    } else {
+                        currentPlayer = "black";
+                    }
                 draw();
             }
         }
+
+        function checkWin(row, col, color) {
+            // Directions: horizontal, vertical, diagonal1, diagonal2
+            const directions = [
+                { dr: 0, dc: 1 },  // horizontal
+                { dr: 1, dc: 0 },  // vertical
+                { dr: 1, dc: 1 },  // diagonal down-right
+                { dr: 1, dc: -1 }  // diagonal down-left
+            ];
+
+            for (const {dr, dc} of directions) {
+                let count = 1;
+
+                // Check forward
+                for (let i = 1; i < 5; i++) {
+                    if (dots.some(d => d.row === row + dr*i && d.col === col + dc*i && d.color === color)) {
+                        count++;
+                    } else break;
+                }
+
+                // Check backward
+                for (let i = 1; i < 5; i++) {
+                    if (dots.some(d => d.row === row - dr*i && d.col === col - dc*i && d.color === color)) {
+                        count++;
+                    } else break;
+                }
+
+                if (count >= 5) return true;
+            }
+
+            return false;
+        }
+
 
         function drawDots() {
             for (const d of dots) {
                 ctx.beginPath();
                 ctx.arc(d.col * cellSize, d.row * cellSize, dotRadius, 0, Math.PI * 2);
-                if (dots.indexOf(d) % 2 === 0) {
-                    ctx.fillStyle = "black";
-                } else {
-                    ctx.fillStyle = "white";
-                }
+                ctx.fillStyle = d.color;
                 ctx.fill();
                 ctx.closePath();
             }
