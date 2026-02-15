@@ -540,3 +540,18 @@ window.addEventListener('pointerleave', ()=>{ lastX = lastY = null; });
   // Start when the page loads
   window.addEventListener('load', initStatusScrolling);
 })();
+
+// ============== CHATBOT ==================
+const bot = document.getElementById("bot");
+const botBox = document.getElementById("bot-box");
+const botClose = document.getElementById("bot-close");
+
+bot.addEventListener("click", () => {
+  bot.style.display = "none";
+  botBox.style.display = "flex";
+});
+
+botClose.addEventListener("click", () => {
+  botBox.style.display = "none";
+  bot.style.display = "flex";
+});

@@ -480,6 +480,82 @@ body.charred a { color:#66aaff; }
     background-color: #bd70ba;
 }
 
+/* game */
+#bot {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  width: 65px;
+  height: 65px;
+  background-color: #ff4d6d;
+  color: white;
+  font-size: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+#bot:hover {
+  transform: scale(1.1);
+}
+
+#bot-box {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  width: 300px;
+  height: 400px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.3);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 1000;
+  animation: popUp 0.3s ease;
+}
+
+#bot-header {
+  background: #ff4d6d;
+  color: white;
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+
+#bot-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+#bot-content {
+  padding: 15px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+@keyframes popUp {
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+
 /* Floating hearts background */
 #hearts-bg { position:fixed; inset:0; overflow:hidden; z-index:0; pointer-events:none; }
 .heart { position:absolute; width:var(--h,18px); height:var(--h,18px); background:#ff5d92; transform:rotate(-45deg); transform-origin:center; animation: floatUp linear forwards; opacity:.75; filter:drop-shadow(0 0 4px rgba(255,90,150,.55)); will-change:transform,opacity,top,left; }
