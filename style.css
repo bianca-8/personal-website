@@ -391,6 +391,7 @@ body.blue-theme #status-text {
 #projects a {
     display: block;
     border: 1px solid #ddd;
+    background-color: #e690a0;
     padding: 1em;
     border-radius: 5px;
     flex: 1 1 calc(33.333% - 2em);
