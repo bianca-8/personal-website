@@ -495,6 +495,7 @@ body.charred a { color:#66aaff; }
 }
 
 #bot:hover {
+  background-color: #e2778b;
   transform: scale(1.1);
 }
 
