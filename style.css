@@ -207,6 +207,7 @@ body.blue-theme #status-text {
 }
 
 #hero {
+  background-color: #f191a3;
   position: relative;
   height: 50vh;
   display: flex;
@@ -268,7 +269,7 @@ body.blue-theme #status-text {
 
 #status-bar span:first-child {
   font-weight: bold;
-  color: #ff3366;
+  color: #f185a0;
   white-space: nowrap;
   flex-shrink: 0;
   margin-right: 10px;
@@ -522,7 +523,7 @@ body.charred a { color:#66aaff; }
 }
 
 #bot-header {
-  background: #ff4d6d;
+  background: #f58599;
   color: white;
   padding: 12px;
   display: flex;
