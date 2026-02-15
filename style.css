@@ -259,13 +259,6 @@ body.blue-theme #status-text {
     margin-left: auto; /* push container to the far right of top-row */
 }
 
-/* Ensure button does not inherit status bar text styles */
-#igniteBtn {
-    color: #fff;
-    text-shadow: none;
-    background:#222;
-}
-
 #status-bar span:first-child {
   font-weight: bold;
   color: #f185a0;
