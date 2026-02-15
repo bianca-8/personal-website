@@ -93,7 +93,7 @@ function makeTextSprite(text, { fontFace='Arial', fontSize=120, color='#ffffff',
   return sprite;
 }
 
-// THEME STATE FOR GRAPH/NODE COLORS (moved up so updateNodeObjects can reference safely)
+// THEME STATE FOR GRAPH/NODE COLORS
 let currentBiancaColor = '#ff3366';
 
 // Procedural rounded box geometry (approximate fillet)
@@ -185,7 +185,7 @@ function updateNodeObjects(node) {
     let tex = cache[node.img];
     if(!tex){ tex = new THREE.TextureLoader().load(node.img); cache[node.img] = tex; }
     const size = 14;
-    const radius = size * 0.25; // moderate rounding (reduced from 0.42)
+    const radius = size * 0.3; // moderate rounding (0.25 before)
     const key = size+":"+radius;
     const gCache = (updateNodeObjects._geomCache || (updateNodeObjects._geomCache = {}));
     let geom = gCache[key];
