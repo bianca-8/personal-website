@@ -467,7 +467,7 @@ body.charred a { color:#66aaff; }
 .button {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #d48fd1;
+    background-color: #f191a3;
     color: white;
     font-size: 18px;
     font-weight: bold;
@@ -477,7 +477,7 @@ body.charred a { color:#66aaff; }
     user-select: none;
 }
 .button:hover {
-    background-color: #bd70ba;
+    background-color: #ff4d6d;
 }
 
 /* game */
@@ -487,7 +487,7 @@ body.charred a { color:#66aaff; }
   right: 25px;
   width: 65px;
   height: 65px;
-  background-color: #ff4d6d;
+  background-color: #f191a3;
   color: white;
   font-size: 36px;
   display: flex;
