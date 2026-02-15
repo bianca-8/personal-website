@@ -32,9 +32,9 @@ body.blue-theme a {
     position: relative;
     float: right;
     margin-right: 1vw;
-    background:#222;
+    background:#f191a3;
     color:#fff;
-    border:1px solid #444;
+    border:1px solid #eb8093;
     padding:.6rem 1rem;
     border-radius:8px;
     cursor:pointer;
@@ -44,7 +44,7 @@ body.blue-theme a {
     transition:background .25s, transform .25s;
 }
 #igniteBtn:hover {
-    background:#000;
+    background:#e2778b;
     transform:translateY(-2px);
 }
 body.blue-theme #igniteBtn {
