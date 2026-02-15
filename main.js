@@ -1,4 +1,4 @@
-import ForceGraph3D from 'force-graph';
+//import ForceGraph3D from 'force-graph';
 
 // Initialize 3D force graph
 const Graph = ForceGraph3D()(document.getElementById("mindmap"))
