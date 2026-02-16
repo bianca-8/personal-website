@@ -632,6 +632,7 @@ body.charred a { color:#66aaff; }
 
 #playlist h2 {
   font-size: 24px;
+  font-family: 'title', sans-serif;
   font-weight: bold;
   color: #333;
   margin-bottom: 20px;
