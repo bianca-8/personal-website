@@ -21,6 +21,13 @@ export default async function handler(req, res) {
   });
 
   const data = await response.json();
+console.log("Spotify API Response:", data);
+if (data.refresh_token) {
+  console.log("Refresh Token:", data.refresh_token);
+} else {
+  console.error("No refresh token found:", data);
+}
+
 
   console.log("REFRESH TOKEN:", data.refresh_token);
 
