@@ -61,6 +61,20 @@ export default async function handler(req, res) {
         body: JSON.stringify({ uris: [trackUri] }),
       }
     );
+    // temp stuff for debugging
+    const addSongRes = await fetch(
+      `https://api.spotify.com/v1/playlists/${process.env.SPOTIFY_PLAYLIST_ID}/tracks`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ uris: [trackUri] }),
+      }
+    );
+    const addSongData = await addSongRes.json();
+  console.log("Add Song Response:", addSongData);
 
     res.status(200).json({ success: true });
   } catch (error) {
