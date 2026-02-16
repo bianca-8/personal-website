@@ -518,12 +518,15 @@ body.charred a { color:#66aaff; }
   color: white;
   padding: 12px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: center;
+  position: relative;
   font-weight: bold;
 }
 
 #bot-close {
+  position: absolute;
+  right: 12px;
   background: none;
   border: none;
   color: white;
