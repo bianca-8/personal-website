@@ -21,6 +21,15 @@ async function getAccessToken() {
   return data.access_token;
 }
 
+function extractTrackUriFromLink(link) {
+  const regex = /https:\/\/open.spotify.com\/track\/([a-zA-Z0-9]{22})/;
+  const match = link.match(regex);
+  if (match && match[1]) {
+    return `spotify:track:${match[1]}`;
+  }
+  return null;
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
@@ -29,27 +38,41 @@ export default async function handler(req, res) {
   try {
     const { song } = req.body;
 
-    const accessToken = await getAccessToken();
+    let trackUri = null;
 
-    // search track
-    const searchRes = await fetch(
-      `https://api.spotify.com/v1/search?q=${encodeURIComponent(
-        song
-      )}&type=track&limit=1`,
-      {
-        headers: { Authorization: `Bearer ${accessToken}` },
+    // Check if song is a URL or a search term
+    if (song.startsWith("https://open.spotify.com/track/")) {
+      trackUri = extractTrackUriFromLink(song);
+    } else {
+      const accessToken = await getAccessToken();
+
+      // search track
+      const searchRes = await fetch(
+        `https://api.spotify.com/v1/search?q=${encodeURIComponent(
+          song
+        )}&type=track&limit=1`,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
+
+      const searchData = await searchRes.json();
+
+      if (!searchData.tracks.items.length) {
+        return res.status(404).json({ error: "Song not found" });
       }
-    );
 
-    const searchData = await searchRes.json();
-
-    if (!searchData.tracks.items.length) {
-      return res.status(404).json({ error: "Song not found" });
+      trackUri = searchData.tracks.items[0].uri;
     }
 
-    const trackUri = searchData.tracks.items[0].uri;
+    // Ensure track URI is valid
+    if (!trackUri) {
+      return res.status(400).json({ error: "Invalid song URI" });
+    }
 
-    // add to playlist
+    const accessToken = await getAccessToken();
+
+    // Add to playlist
     await fetch(
       `https://api.spotify.com/v1/playlists/${process.env.SPOTIFY_PLAYLIST_ID}/tracks`,
       {
@@ -61,20 +84,6 @@ export default async function handler(req, res) {
         body: JSON.stringify({ uris: [trackUri] }),
       }
     );
-    // temp stuff for debugging
-    const addSongRes = await fetch(
-      `https://api.spotify.com/v1/playlists/${process.env.SPOTIFY_PLAYLIST_ID}/tracks`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ uris: [trackUri] }),
-      }
-    );
-    const addSongData = await addSongRes.json();
-  console.log("Add Song Response:", addSongData);
 
     res.status(200).json({ success: true });
   } catch (error) {
