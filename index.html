@@ -305,34 +305,6 @@
           <li><a href="music.html" class="footerLinks">Music</a></li>
           <li><a href="game.html" class="footerLinks">Game</a></li>
         </ul>
-        <!-- Spotify recommend song -->
-        <section id="playlist">
-          <h2>Recommend a Song</h2>
-
-          <div class="song-recommendation-container">
-            <input 
-              id="songInput" 
-              type="text" 
-              placeholder="Paste Spotify link or type song name"
-              aria-label="Type song name or paste Spotify link"
-            />
-            <div class="spotButton" onclick="submitSong()">Add Song</div>
-          </div>
-
-          <!-- Embedded Playlist -->
-          <section>
-            <div class="spotify-embed-container">
-              <iframe
-                data-testid="embed-iframe"
-                src="https://open.spotify.com/embed/playlist/0DF0Y3i7eQGfsYfhMwDPkl?utm_source=generator"
-                frameborder="0"
-                allowfullscreen=""
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                loading="lazy">
-              </iframe>
-            </div>
-          </section>
-        </section>
       </div>
     </main>
     <footer>
