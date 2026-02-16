@@ -694,6 +694,7 @@ body.charred a { color:#66aaff; }
 }
 
 #recommend {
+    font-size: 28px;
     align-items: center;
     justify-content: center;
     font-family: 'title', sans-serif;
