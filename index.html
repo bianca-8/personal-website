@@ -63,21 +63,6 @@
         </iframe>
       </div>
       -->
-
-      <!-- Spotify recommend song -->
-      <section id="playlist">
-        <h2>Recommend a Song 🎵</h2>
-
-        <input 
-          id="songInput" 
-          type="text" 
-          placeholder="Paste Spotify link or type song name"
-        />
-
-        <button onclick="submitSong()">Add Song</button>
-
-        <p id="songStatus"></p>
-      </section>
       
     </div>
     
@@ -320,6 +305,20 @@
           <li><a href="music.html" class="footerLinks">Music</a></li>
           <li><a href="game.html" class="footerLinks">Game</a></li>
         </ul>
+        <!-- Spotify recommend song -->
+        <section id="playlist">
+          <h2>Recommend a Song</h2>
+
+          <input 
+            id="songInput" 
+            type="text" 
+            placeholder="Paste Spotify link or type song name"
+          />
+
+          <div class="button" onclick="submitSong()">Add Song</div>
+
+          <p id="songStatus"></p>
+        </section>
       </div>
     </main>
     <footer>
@@ -331,12 +330,3 @@
     </footer>
   </body>
 </html>
-
-
-
-
-
-
-
-
-
