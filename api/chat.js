@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     const { message } = req.body;
 
     const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     const prompt = `
 You are Bianca, a computer science student at University of Toronto.
