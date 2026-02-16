@@ -657,8 +657,8 @@ body.charred a { color:#66aaff; }
 }
 
 #songInput:focus {
-  border-color: #1db954;
-  box-shadow: 0 0 5px rgba(29, 185, 84, 0.6);
+  border-color: #f58599;
+  box-shadow: 0 0 5px rgba(245, 133, 153, 0.6);
 }
 
 @media (max-width: 600px) {
@@ -691,6 +691,12 @@ body.charred a { color:#66aaff; }
   border: none;
   border-radius: 12px;
   overflow: hidden;
+}
+
+#recommend {
+    align-items: center;
+    justify-content: center;
+    font-family: 'title', sans-serif;
 }
 
 
