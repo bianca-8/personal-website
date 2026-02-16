@@ -1,6 +1,16 @@
 This is my personal website! It's a work in progress...
 
+I have a web of things related to me as the main thing you see when you go to my website (click around to check it out!). I have an About Me, Summary, Projects, Achievements, Involvements, some of my writing and some fun stuff! 
 
-At the bottom under fun:
-- There's also my favourite game, 5 in a row!
-- Recommend me a song on Spotify!
+There's some secret pages (like the one when you click 20-page document), and the two cool things hidden at the bottom under "Fun". One is my favourite game, Gomoku, or Five in a Row, which I coded in JavaScript. The other is a place to recommend me songs on Spotify by pasting a link or writing the song name, which automatically adds it to my playlist titled "Recommendations"! Feel free to give me any song recommendations!
+
+In the bottom right corner, there is a button that when clicked, expands to a chatbot based from GeminiAPI. I gave it a lot of information and it's supposed to represent me. In the future I will probably train my own model and fine-tune it with my text messages. 
+
+The the top right corner, there is an Ignite Theme button, this changes the whole mode into dark mode for the dark mode lovers, and changes the background colour to my other favourite colour, blue! While in dark mode, press the "Spray" button in the top right again to go back to light mode.
+
+Things I may add in the future:
+- perfect the writing parts and make it more visually appealing
+- add a dynamic (pink) sky background with clouds (so I can work on my design skills as well)
+- write up the section about all the hackathons I have been to
+- maybe have a blog where I just write about my life
+- put my guitar videos up in the Music section under "Fun"
