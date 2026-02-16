@@ -541,7 +541,8 @@ window.addEventListener('pointerleave', ()=>{ lastX = lastY = null; });
   window.addEventListener('load', initStatusScrolling);
 })();
 
-// ============== CHATBOT ==================
+
+// ================== CHATBOT =====================
 const bot = document.getElementById("bot");
 const botBox = document.getElementById("bot-box");
 const botClose = document.getElementById("bot-close");
@@ -554,4 +555,46 @@ bot.addEventListener("click", () => {
 botClose.addEventListener("click", () => {
   botBox.style.display = "none";
   bot.style.display = "flex";
+});
+
+const input = document.getElementById("chat-input");
+const sendBtn = document.getElementById("send-btn");
+const messages = document.getElementById("chat-messages");
+
+function addMessage(text, type) {
+    const msg = document.createElement("div");
+    msg.classList.add("message");
+
+    if (type === "user") {
+        msg.classList.add("user-message");
+    } else {
+        msg.classList.add("bot-message");
+    }
+
+    msg.textContent = text;
+    messages.appendChild(msg);
+
+    // autoscroll to bottom
+    messages.scrollTop = messages.scrollHeight;
+}
+
+function sendMessage() {
+    const text = input.value.trim();
+    if (!text) return;
+
+    addMessage(text, "user");
+    input.value = "";
+
+    // temp reply
+    setTimeout(() => {
+        addMessage("This is a response.", "bot");
+    }, 500);
+}
+
+sendBtn.addEventListener("click", sendMessage);
+
+input.addEventListener("keypress", function(e) {
+    if (e.key === "Enter") {
+        sendMessage();
+    }
 });

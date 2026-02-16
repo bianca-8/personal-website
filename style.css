@@ -196,8 +196,6 @@ body.blue-theme #status-text {
     margin-bottom: 0.5em;
 }
 
-.section 
-
 #title {
     font-size: 2.5em;
     padding: 1em;
@@ -422,11 +420,11 @@ body.blue-theme #status-text {
     font-family: 'Happy Monkey', sans-serif;
 }
 
-body.blue-theme #projects div {
+body.blue-theme #projects a {
     border-color:#1d3b55;
     background:#13293d;
 }
-body.blue-theme #projects div:hover {
+body.blue-theme #projects a:hover {
     background:#163850;
 }
 
@@ -533,10 +531,79 @@ body.charred a { color:#66aaff; }
   cursor: pointer;
 }
 
-#bot-content {
-  padding: 15px;
+#chat-messages {
   flex: 1;
+  padding: 15px;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: white;
+}
+
+#chat-input-area {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #eee;
+  background: white;
+}
+
+#chat-input {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  outline: none;
+  font-size: 14px;
+}
+
+#chat-input:focus {
+  border-color: #f58599;
+}
+
+#send-btn {
+  margin-left: 8px;
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: none;
+  background: #f58599;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+#send-btn:hover {
+  background: #e56f86;
+}
+
+.message {
+  max-width: 70%;
+  padding: 8px 12px;
+  border-radius: 18px;
+  font-size: 14px;
+  word-wrap: break-word;
+}
+
+.user-message {
+  align-self: flex-end;
+  background: #f58599;
+  color: white;
+}
+
+.bot-message {
+  align-self: flex-start;
+  background: #f2f2f2;
+  color: #333;
+}
+
+#chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+#chat-messages::-webkit-scrollbar-thumb {
+  background: #ddd;
+  border-radius: 3px;
 }
 
 @keyframes popUp {
