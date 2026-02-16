@@ -661,22 +661,6 @@ body.charred a { color:#66aaff; }
   box-shadow: 0 0 5px rgba(29, 185, 84, 0.6);
 }
 
-.spotButton {
-  background-color: #1db954;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  text-align: center;
-  transition: background-color 0.3s ease;
-  width: auto;
-}
-
-.spotButton:hover {
-  background-color: #1ed760;
-}
-
 @media (max-width: 600px) {
   .spotify-embed-container {
     height: 250px;
