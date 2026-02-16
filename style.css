@@ -644,6 +644,7 @@ body.charred a { color:#66aaff; }
   flex-direction: column;
   gap: 10px;
   align-items: center;
+  font-family: 'happy monkey', sans-serif;
 }
 
 #songInput {
@@ -694,11 +695,17 @@ body.charred a { color:#66aaff; }
   overflow: hidden;
 }
 
+#recommend-container {
+  display: flex;  
+  justify-content: center; 
+  align-items: center; 
+  height: 100vh; 
+}
+
 #recommend {
-    font-size: 28px;
-    align-items: center;
-    justify-content: center;
-    font-family: 'title', sans-serif;
+  font-size: 28px;
+  font-family: 'title', sans-serif;
+  text-align: center;
 }
 
 
