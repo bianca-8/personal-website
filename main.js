@@ -578,17 +578,30 @@ function addMessage(text, type) {
     messages.scrollTop = messages.scrollHeight;
 }
 
-function sendMessage() {
+async function sendMessage() {
     const text = input.value.trim();
     if (!text) return;
 
     addMessage(text, "user");
     input.value = "";
 
-    // temp reply
-    setTimeout(() => {
-        addMessage("This is a response.", "bot");
-    }, 500);
+    try {
+        const response = await fetch("/api/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ message: text })
+        });
+
+        const data = await response.json();
+
+        addMessage(data.reply, "bot");
+
+    } catch (error) {
+        console.error(error);
+        addMessage("Something went wrong.", "bot");
+    }
 }
 
 sendBtn.addEventListener("click", sendMessage);

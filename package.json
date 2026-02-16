@@ -16,8 +16,12 @@
     "url": "https://github.com/bianca-8/personal-website/issues"
   },
   "homepage": "https://github.com/bianca-8/personal-website#readme",
-  "description": "",
+  "description": "This is my personal website! It's a work in progress...",
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
     "force-graph": "^1.51.1",
     "http-server": "^14.1.1"
   }
