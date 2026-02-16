@@ -611,3 +611,32 @@ input.addEventListener("keypress", function(e) {
         sendMessage();
     }
 });
+
+// ================== SPOTIFY INTEGRATION =====================
+async function submitSong() {
+  const input = document.getElementById("songInput");
+  const song = input.value.trim();
+
+  if (!song) return;
+
+  try {
+    const response = await fetch("/api/add-song", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ song })
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      alert("Song added!");
+      input.value = "";
+    } else {
+      alert(data.error || "Something went wrong.");
+    }
+
+  } catch (error) {
+    console.error(error);
+    alert("Server error.");
+  }
+}
