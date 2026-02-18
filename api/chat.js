@@ -71,3 +71,52 @@ ${message}
     res.status(500).json({ error: "Something went wrong." });
   }
 }
+
+
+
+
+// DISCORD AND INSTA CHATBOT
+import { createClient } from '@supabase/supabase-js'
+import { GoogleGenerativeAI } from "@google/generative-ai"
+
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+)
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
+
+export default async function handler(req, res) {
+  const { message } = req.body
+
+  // 1. Embed user query
+  const embedModel = genAI.getGenerativeModel({ model: "text-embedding-004" })
+  const embeddingResult = await embedModel.embedContent(message)
+  const queryEmbedding = embeddingResult.embedding.values
+
+  // 2. Retrieve similar style chunks
+  const { data } = await supabase.rpc("match_messages", {
+    query_embedding: queryEmbedding,
+    match_count: 5
+  })
+
+  const styleText = data.map(d => d.content).join("\n\n")
+
+  // 3. Generate response
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
+
+  const prompt = `
+You speak exactly like this person.
+
+Examples of how they talk:
+${styleText}
+
+Match tone, slang, emoji usage.
+
+User: ${message}
+`
+
+  const result = await model.generateContent(prompt)
+
+  res.status(200).json({ reply: result.response.text() })
+}
