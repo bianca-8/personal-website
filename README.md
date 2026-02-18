@@ -14,3 +14,5 @@ Things I may add in the future:
 - write up the section about all the hackathons I have been to
 - maybe have a blog where I just write about my life
 - put my guitar videos up in the Music section under "Fun"
+- create a bot that plays Five in a Row like me (and train it on my past games), I don't want it to be good, just that it plays like me
+- Maybe I will also try and create a Five in a Row bot that is unbeatable too...
