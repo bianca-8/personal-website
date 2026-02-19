@@ -8,9 +8,21 @@ In the bottom right corner, there is a button that when clicked, expands to a ch
 
 The the top right corner, there is an Ignite Theme button, this changes the whole mode into dark mode for the dark mode lovers, and changes the background colour to my other favourite colour, blue! While in dark mode, press the "Spray" button in the top right again to go back to light mode.
 
-Things I may add in the future:
+### How I made it
+This website is coded in HTML, CSS and JavaScript and hosted on Vercel. 
+
+The web uses Three.js, a 3D graphics library along with Three.js examples for the 3D text of my name. It also uses 3D Force Graph to create the network of nodes and links which conects all the boxes of images to my name.
+
+The Five in a Row game is made completely in JavaScript with styling from CSS.
+
+The spotify recommender is made with Spotify API to add songs to my "Recommendations" playlist (it will expire March 3rd since I don't have Spotify Premium 🥲) and there is also a playlist embed.
+
+The chatbot uses GeminiAPI with a prompt feeding it information about me, but I'm currently working on feeding it my text messages as well so it also speaks more like me too! 
+
+### Things I may add in the future:
 - perfect the writing parts and make it more visually appealing
 - add a dynamic (pink) sky background with clouds (so I can work on my design skills as well)
+- Secret background special effects for holidays and special days (there's currently one for Valentine's Day, but you'll have to wait until then to see it again!)
 - write up the section about all the hackathons I have been to
 - maybe have a blog where I just write about my life
 - put my guitar videos up in the Music section under "Fun"

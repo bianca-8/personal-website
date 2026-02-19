@@ -89,12 +89,10 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
 export default async function handler(req, res) {
   const { message } = req.body
 
-  // 1. Embed user query
   const embedModel = genAI.getGenerativeModel({ model: "text-embedding-004" })
   const embeddingResult = await embedModel.embedContent(message)
   const queryEmbedding = embeddingResult.embedding.values
 
-  // 2. Retrieve similar style chunks
   const { data } = await supabase.rpc("match_messages", {
     query_embedding: queryEmbedding,
     match_count: 5
@@ -102,7 +100,6 @@ export default async function handler(req, res) {
 
   const styleText = data.map(d => d.content).join("\n\n")
 
-  // 3. Generate response
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
 
   const prompt = `
