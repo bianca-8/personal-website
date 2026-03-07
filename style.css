@@ -12,9 +12,11 @@
 body {
     font-family: 'Happy Monkey', sans-serif;
     padding: 1em;
-    background: #FEDCDB;
+    background: url('assets/sky.png') center center / cover fixed;
     color: #333;
     transition: background 0.8s ease, color 0.8s ease;
+    position: relative;
+    overflow-x: hidden;
 }
 body.blue-theme {
     background:#0d1b2a;
