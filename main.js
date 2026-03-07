@@ -24,6 +24,7 @@ const Graph = ForceGraph3D()(document.getElementById("mindmap"))
   { id: "js", group: 2, fx: -25, fy: 20, fz: 10, img: 'assets/js.png' },
   { id: "wisc", group: 2, fx: 70, fy: 40, fz: 20, img: 'assets/wisc.jpeg' },
   { id: "gdg", group: 2, fx: 20, fy: 20, fz: 60, img: 'assets/gdg.png' },
+  { id: "soon", group: 2, fx: 30, fy: 50, fz: 20, img: 'assets/soon.png' },
     ],
     links: [
       { source: "Bianca", target: "Piano" },
@@ -45,6 +46,7 @@ const Graph = ForceGraph3D()(document.getElementById("mindmap"))
       { source: "Bianca", target: "js" },
       { source: "Bianca", target: "wisc" },
       { source: "Bianca", target: "gdg" },
+      { source: "Bianca", target: "soon" },
     ]
   })
   .nodeAutoColorBy("group")
@@ -65,7 +67,7 @@ Graph.linkOpacity(() => 0.8);
 Graph.backgroundColor('rgba(0,0,0,0)');
 try { Graph.renderer().setClearColor(0x000000, 0); } catch(e){}
 
-// ===================== TEXT SPRITE APPROACH (no FontLoader needed) =====================
+// text
 function makeTextSprite(text, { fontFace='Arial', fontSize=120, color='#ffffff', background='transparent', padding=20 }={}) {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
@@ -93,10 +95,10 @@ function makeTextSprite(text, { fontFace='Arial', fontSize=120, color='#ffffff',
   return sprite;
 }
 
-// THEME STATE FOR GRAPH/NODE COLORS
+// theme
 let currentBiancaColor = '#ff3366';
 
-// Procedural rounded box geometry (approximate fillet)
+// rounded box
 function createRoundedBoxGeometry(size, radius, segments = 4){
   radius = Math.min(radius, size/2 * 0.999);
   const half = size/2;
@@ -108,17 +110,16 @@ function createRoundedBoxGeometry(size, radius, segments = 4){
   for(let i=0;i<pos.count;i++){
     v.fromBufferAttribute(pos, i);
     const ax = Math.abs(v.x), ay = Math.abs(v.y), az = Math.abs(v.z);
-    if(ax <= inner && ay <= inner && az <= inner) continue; // inner cube untouched
-    // Clamp to inner cube base corner
+    if(ax <= inner && ay <= inner && az <= inner) continue;
     const bx = Math.sign(v.x) * Math.min(ax, inner);
     const by = Math.sign(v.y) * Math.min(ay, inner);
     const bz = Math.sign(v.z) * Math.min(az, inner);
-    // Direction from base corner
+
     const dx = v.x - bx;
     const dy = v.y - by;
     const dz = v.z - bz;
     const d = Math.hypot(dx,dy,dz) || 1;
-    // Project onto sphere of radius at base corner
+
     const k = radius / d;
     v.set(bx + dx*k, by + dy*k, bz + dz*k);
     pos.setXYZ(i, v.x, v.y, v.z);
@@ -143,14 +144,14 @@ function createRoundedBoxGeometry(size, radius, segments = 4){
   }
   window.buildBiancaMesh = function(){
     const baseColor = currentBiancaColor;
-    const depthLayers = 60; // flat stack
-    const gap = 0.8;        // spacing between layers
+    const depthLayers = 60;
+    const gap = 0.8;
     const group = new THREE.Group();
     let baseTexInfo = makeLayerTexture(baseColor);
     const geom = new THREE.PlaneGeometry(baseTexInfo.w, baseTexInfo.h);
 
     for(let i=0;i<depthLayers;i++){
-      const shade = 1 - (i/(depthLayers-1))*0.55; // keep depth shading
+      const shade = 1 - (i/(depthLayers-1))*0.55;
       const r = Math.max(0,Math.min(255, Math.round(parseInt(baseColor.slice(1,3),16)*shade)));
       const g = Math.max(0,Math.min(255, Math.round(parseInt(baseColor.slice(3,5),16)*shade)));
       const b = Math.max(0,Math.min(255, Math.round(parseInt(baseColor.slice(5,7),16)*shade)));
@@ -162,8 +163,8 @@ function createRoundedBoxGeometry(size, radius, segments = 4){
       group.add(layer);
     }
 
-    group.scale.set(0.15,0.15,0.15); // larger initial scale
-    group.rotation.x = 0; // face straight on
+    group.scale.set(0.15,0.15,0.15);
+    group.rotation.x = 0;
     group.rotation.y = 0;
     group.name = 'BiancaPseudo3D';
     window._bianca3DMesh = group; 
@@ -185,7 +186,7 @@ function updateNodeObjects(node) {
     let tex = cache[node.img];
     if(!tex){ tex = new THREE.TextureLoader().load(node.img); cache[node.img] = tex; }
     const size = 14;
-    const radius = size * 0.3; // moderate rounding (0.25 before)
+    const radius = size * 0.3; // rounding (0.25 before)
     const key = size+":"+radius;
     const gCache = (updateNodeObjects._geomCache || (updateNodeObjects._geomCache = {}));
     let geom = gCache[key];
@@ -213,7 +214,6 @@ function setGraphTheme(mode){
   console.log('Theme set', mode, 'nodes', Graph.graphData().nodes.map(n=>n.id));
 }
 
-// Initial theme setup (removed stray backtick)
 setGraphTheme('light');
 
 // ==============================================================================
@@ -314,7 +314,6 @@ function createDrop(x,y){
 btn.addEventListener('click', () => {
   const isBlue = document.body.classList.contains('blue-theme');
   if(!isBlue){
-    // Ignite sequence
     ensureFireLine();
     overlay.classList.add('line-burning');
     overlay.addEventListener('animationend', () => {
@@ -322,24 +321,21 @@ btn.addEventListener('click', () => {
       setGraphTheme('blue');
       overlay.classList.remove('line-burning');
       overlay.innerHTML = '';
-      btn.textContent = 'Spray'; // now user must click again to start spraying
+      btn.textContent = 'Spray';
     }, { once:true });
   } else if(isBlue && !spraying){
-    startSprayMode(); // begin spraying only after explicit click in blue mode
+    startSprayMode();
   }
-  // If already spraying, ignore further clicks.
 });
 
-// --- Spray interaction events (restored) ---
 function handlePointerMove(e){ if(!spraying) return; const {x,y}=relPos(e); addDrop(x,y); }
 window.addEventListener('pointermove', handlePointerMove);
 window.addEventListener('pointerdown', e=>{ if(!spraying) return; const {x,y}=relPos(e); addDrop(x,y); });
 window.addEventListener('pointerup', ()=>{ lastX = lastY = null; });
 window.addEventListener('pointerleave', ()=>{ lastX = lastY = null; });
-// ------------------------------------------------
 })();
 
-// =============== Valentine Hearts (only Feb 14) ===============
+// Valentine Hearts (only Feb 14)
 (function initValentineHearts(){
   const today = new Date();
   if(!(today.getMonth() === 1 && today.getDate() === 14)) return; // Only Feb 14
@@ -396,7 +392,6 @@ window.addEventListener('pointerleave', ()=>{ lastX = lastY = null; });
   });
   spawn();
   
-  // Simple status text scrolling
   function initStatusScrolling() {
     const statusText = document.getElementById('status-text');
     const container = document.getElementById('status-text-container');
@@ -407,7 +402,7 @@ window.addEventListener('pointerleave', ()=>{ lastX = lastY = null; });
     function scrollText() {
       const now = Date.now();
       const elapsed = startTime ? now - startTime : 0;
-      const cycleTime = 8000; // 8 seconds per full cycle
+      const cycleTime = 8000;
       const progress = (elapsed % cycleTime) / cycleTime;
       
       const textWidth = statusText.scrollWidth;
@@ -420,16 +415,12 @@ window.addEventListener('pointerleave', ()=>{ lastX = lastY = null; });
         let position;
         
         if (progress < 0.25) {
-          // First pause
           position = 0;
         } else if (progress < 0.5) {
-          // Scroll right
           position = (progress - 0.25) * 4 * scrollDistance;
         } else if (progress < 0.75) {
-          // Pause at end
           position = scrollDistance;
         } else {
-          // Scroll back
           position = (1 - (progress - 0.75) * 4) * scrollDistance;
         }
         
@@ -448,7 +439,6 @@ window.addEventListener('pointerleave', ()=>{ lastX = lastY = null; });
       }
     }
     
-    // Event listeners
     container.addEventListener('mouseenter', () => {
       isHovered = true;
       statusText.style.transform = 'translateX(0)';
@@ -459,10 +449,8 @@ window.addEventListener('pointerleave', ()=>{ lastX = lastY = null; });
       startScrolling();
     });
     
-    // Initialize
     startScrolling();
     
-    // Handle resize
     let resizeTimeout;
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimeout);
@@ -470,7 +458,6 @@ window.addEventListener('pointerleave', ()=>{ lastX = lastY = null; });
     });
   }
   
-  // Initialize status text scrolling with precise control
   function initStatusScrolling() {
     const statusText = document.getElementById('status-text');
     const wrapper = document.getElementById('status-text-wrapper');
@@ -481,9 +468,8 @@ window.addEventListener('pointerleave', ()=>{ lastX = lastY = null; });
       const containerWidth = container.offsetWidth;
       
       if (textWidth > containerWidth) {
-        // Calculate the exact scroll distance needed
         const scrollDistance = textWidth - containerWidth;
-        const duration = Math.max(5, scrollDistance / 30); // Adjust speed factor as needed
+        const duration = Math.max(5, scrollDistance / 30);
         
         const keyframes = `
           @keyframes scrollText {
@@ -497,30 +483,24 @@ window.addEventListener('pointerleave', ()=>{ lastX = lastY = null; });
           }
         `;
         
-        // Remove old style if exists
         const oldStyle = document.getElementById('scroll-animation-style');
         if (oldStyle) oldStyle.remove();
         
-        // Add new style
         const style = document.createElement('style');
         style.id = 'scroll-animation-style';
         style.textContent = keyframes;
         document.head.appendChild(style);
         
-        // Ensure wrapper is visible and properly sized
         wrapper.style.display = 'inline-block';
         wrapper.style.whiteSpace = 'nowrap';
       } else {
-        // If text fits, make sure it's not scrolling
         wrapper.style.animation = 'none';
         wrapper.style.transform = 'translateX(0)';
       }
     }
     
-    // Initial setup
     updateScroll();
     
-    // Handle hover
     container.addEventListener('mouseenter', () => {
       wrapper.style.animationPlayState = 'paused';
     });
@@ -529,20 +509,18 @@ window.addEventListener('pointerleave', ()=>{ lastX = lastY = null; });
       wrapper.style.animationPlayState = 'running';
     });
     
-    // Handle window resize
     let resizeTimer;
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(updateScroll, 100);
     });
   }
-  
-  // Start when the page loads
+
   window.addEventListener('load', initStatusScrolling);
 })();
 
 
-// ================== CHATBOT =====================
+// chatbot
 const bot = document.getElementById("bot");
 const botBox = document.getElementById("bot-box");
 const botClose = document.getElementById("bot-close");
@@ -574,7 +552,6 @@ function addMessage(text, type) {
     msg.textContent = text;
     messages.appendChild(msg);
 
-    // autoscroll to bottom
     messages.scrollTop = messages.scrollHeight;
 }
 
@@ -612,7 +589,7 @@ input.addEventListener("keypress", function(e) {
     }
 });
 
-// ================== SPOTIFY INTEGRATION =====================
+// spotify
 async function submitSong() {
   const input = document.getElementById("songInput");
   const song = input.value.trim();
