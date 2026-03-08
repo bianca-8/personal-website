@@ -12,11 +12,17 @@
 body {
     font-family: 'Happy Monkey', sans-serif;
     padding: 1em;
-    background: url('assets/sky.png') center center / cover fixed;
+    background: url('assets/sky.png') 0% 50% / 200% auto;
     color: #333;
-    transition: background 0.8s ease, color 0.8s ease;
+    transition: color 0.8s ease;
     position: relative;
     overflow-x: hidden;
+    animation: skyMove 40s ease-in-out infinite alternate;
+}
+
+@keyframes skyMove {
+    0%   { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
 }
 body.blue-theme {
     background:#0d1b2a;
@@ -702,8 +708,6 @@ body.charred a { color:#66aaff; }
   font-family: 'happy monkey', sans-serif;
   text-align: center;
 }
-
-
 
 /* Floating hearts background */
 #hearts-bg { position:fixed; inset:0; overflow:hidden; z-index:0; pointer-events:none; }
