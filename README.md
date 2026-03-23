@@ -1,5 +1,11 @@
 This is my personal website! It's a work in progress...
 
+### NEW UPDATES
+I added a visual timeline display for my involvements (I will add dates and more information later). I made a carousel for my writings but I will add more of my writings on it later. I also changed the background! It's now a sky that moves! I'm currently working on a contact form as well, but I'm still trying to get the backend to connect.
+
+Next, I will work a bit more on the ignite theme button to make the transitions more smooth.
+
+### General Info
 I have a web of things related to me as the main thing you see when you go to my website (click around to check it out!). I have an About Me, Summary, Projects, Achievements, Involvements, some of my writing and some fun stuff! 
 
 There's some secret pages (like the one when you click 20-page document), and the two cool things hidden at the bottom under "Fun". One is my favourite game, Gomoku, or Five in a Row, which I coded in JavaScript. The other is a place to recommend me songs on Spotify by pasting a link or writing the song name, which automatically adds it to my playlist titled "Recommendations"! Feel free to give me any song recommendations!
@@ -28,3 +34,6 @@ The chatbot uses GeminiAPI with a prompt feeding it information about me, but I'
 - put my guitar videos up in the Music section under "Fun"
 - create a bot that plays Five in a Row like me (and train it on my past games), I don't want it to be good, just that it plays like me
 - Maybe I will also try and create a Five in a Row bot that is unbeatable too...
+
+# Running it locally
+Run python -m http.server

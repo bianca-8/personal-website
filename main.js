@@ -210,7 +210,9 @@ function setGraphTheme(mode){
     currentBiancaColor = '#ff3366';
   }
   Graph.nodeThreeObject(updateNodeObjects);
-  if(typeof Graph.refresh === 'function'){ Graph.refresh(); }
+  if(typeof Graph.refresh === 'function'){ 
+    Graph.refresh(); 
+  }
   console.log('Theme set', mode, 'nodes', Graph.graphData().nodes.map(n=>n.id));
 }
 
@@ -525,49 +527,52 @@ const bot = document.getElementById("bot");
 const botBox = document.getElementById("bot-box");
 const botClose = document.getElementById("bot-close");
 
-bot.addEventListener("click", () => {
-  bot.style.display = "none";
-  botBox.style.display = "flex";
-});
+if (bot && botBox && botClose) {
+  bot.addEventListener("click", () => {
+    bot.style.display = "none";
+    botBox.style.display = "flex";
+  });
 
-botClose.addEventListener("click", () => {
-  botBox.style.display = "none";
-  bot.style.display = "flex";
-});
+  botClose.addEventListener("click", () => {
+    botBox.style.display = "none";
+    bot.style.display = "flex";
+  });
+}
 
 const input = document.getElementById("chat-input");
 const sendBtn = document.getElementById("send-btn");
 const messages = document.getElementById("chat-messages");
 
-function addMessage(text, type) {
-    const msg = document.createElement("div");
-    msg.classList.add("message");
+if (input && sendBtn && messages) {
+  function addMessage(text, type) {
+      const msg = document.createElement("div");
+      msg.classList.add("message");
 
-    if (type === "user") {
-        msg.classList.add("user-message");
-    } else {
-        msg.classList.add("bot-message");
-    }
+      if (type === "user") {
+          msg.classList.add("user-message");
+      } else {
+          msg.classList.add("bot-message");
+      }
 
-    msg.textContent = text;
-    messages.appendChild(msg);
+      msg.textContent = text;
+      messages.appendChild(msg);
 
-    messages.scrollTop = messages.scrollHeight;
-}
+      messages.scrollTop = messages.scrollHeight;
+  }
 
-async function sendMessage() {
-    const text = input.value.trim();
-    if (!text) return;
+  async function sendMessage() {
+      const text = input.value.trim();
+      if (!text) return;
 
-    addMessage(text, "user");
-    input.value = "";
+      addMessage(text, "user");
+      input.value = "";
 
-    try {
-        const response = await fetch("/api/chat", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+      try {
+          const response = await fetch("/api/chat", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json"
+              },
             body: JSON.stringify({ message: text })
         });
 
@@ -579,15 +584,16 @@ async function sendMessage() {
         console.error(error);
         addMessage("Something went wrong.", "bot");
     }
+  }
+
+  sendBtn.addEventListener("click", sendMessage);
+
+  input.addEventListener("keypress", function(e) {
+      if (e.key === "Enter") {
+          sendMessage();
+      }
+  });
 }
-
-sendBtn.addEventListener("click", sendMessage);
-
-input.addEventListener("keypress", function(e) {
-    if (e.key === "Enter") {
-        sendMessage();
-    }
-});
 
 // spotify
 async function submitSong() {
@@ -618,3 +624,74 @@ async function submitSong() {
   }
 }
 
+// contact form
+const contactForm = document.getElementById('contact-form');
+if (contactForm) {
+  contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('cf-name').value.trim();
+    const email = document.getElementById('cf-email').value.trim();
+    const message = document.getElementById('cf-message').value.trim();
+    const status = document.getElementById('cf-status');
+    const btn = contactForm.querySelector('button[type="submit"]');
+
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+    status.textContent = '';
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, message })
+      });
+      const data = await res.json();
+      if (data.success) {
+        status.textContent = 'Message sent!';
+        status.style.color = '#4caf50';
+        contactForm.reset();
+      } else {
+        status.textContent = data.error || 'Something went wrong.';
+        status.style.color = '#e05';
+      }
+    } catch (err) {
+      status.textContent = 'Server error. Please email me directly.';
+      status.style.color = '#e05';
+    }
+
+    btn.disabled = false;
+    btn.textContent = 'Send';
+  });
+}
+
+// writing carousel
+const carouselContainer = document.querySelector('.carousel-container');
+const carouselElement = carouselContainer.querySelector('.carousel');
+const carouselSlides = carouselContainer.querySelectorAll('.carousel-slide');
+const leftArrowBtn = carouselContainer.querySelector('.left-arrow');
+const rightArrowBtn = carouselContainer.querySelector('.right-arrow');
+
+if (carouselElement && carouselSlides.length > 0 && leftArrowBtn && rightArrowBtn) {
+  let currentIndex = 0;
+  const totalSlides = carouselSlides.length;
+  const slidesToShow = 3;
+
+  function updateCarousel() {
+    const slidePercentage = (100 / slidesToShow);
+    const translateAmount = currentIndex * slidePercentage;
+    carouselElement.style.transform = `translateX(-${translateAmount}%)`;
+  }
+
+  function moveToNextSlide() {
+    currentIndex = (currentIndex + 1) % totalSlides;
+    updateCarousel();
+  }
+
+  function moveToPreviousSlide() {
+    currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+    updateCarousel();
+  }
+
+  rightArrowBtn.addEventListener('click', moveToNextSlide);
+  leftArrowBtn.addEventListener('click', moveToPreviousSlide);
+}
