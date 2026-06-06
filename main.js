@@ -202,6 +202,7 @@ function setGraphTheme(mode){
 }
 
 setGraphTheme('light');
+}
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initializeGraph);
