@@ -3,7 +3,7 @@ This is my personal website! It's a work in progress...
 ### NEW UPDATES
 I added a visual timeline display for my involvements (I will add dates and more information later). I made a carousel for my writings but I will add more of my writings on it later. I also changed the background! It's now a sky that moves! I'm currently working on a contact form as well, but I'm still trying to get the backend to connect.
 
-Next, I will work a bit more on the ignite theme button to make the transitions more smooth. (5 hrs)
+Next, I will work a bit more on the ignite theme button to make the transitions more smooth. (5 hrs - timer currently at 16.5 hrs)
 
 ### General Info
 I have a web of things related to me as the main thing you see when you go to my website (click around to check it out!). I have an About Me, Summary, Projects, Achievements, Involvements, some of my writing and some fun stuff! 

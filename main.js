@@ -1,7 +1,12 @@
-//import ForceGraph3D from 'force-graph';
+let Graph;
+function initializeGraph() {
+  if (typeof THREE === 'undefined' || typeof ForceGraph3D === 'undefined') {
+    requestAnimationFrame(initializeGraph);
+    return;
+  }
 
 // Initialize 3D force graph
-const Graph = ForceGraph3D()(document.getElementById("mindmap"))
+Graph = ForceGraph3D()(document.getElementById("mindmap"))
   .graphData({
     nodes: [
   { id: "Bianca", group: 1, fx: 0, fy: 100, fz: 0},
@@ -63,9 +68,12 @@ const Graph = ForceGraph3D()(document.getElementById("mindmap"))
 
 Graph.linkColor(() => '#ffffff');
 Graph.linkWidth(() => 1);
-Graph.linkOpacity(() => 0.8); 
+Graph.linkOpacity(() => 0.8);
 Graph.backgroundColor('rgba(0,0,0,0)');
-try { Graph.renderer().setClearColor(0x000000, 0); } catch(e){}
+try { 
+  const renderer = Graph.renderer();
+  if (renderer) renderer.setClearColor(0x000000, 0);
+} catch(e){}
 
 // text
 function makeTextSprite(text, { fontFace='Arial', fontSize=120, color='#ffffff', background='transparent', padding=20 }={}) {
@@ -96,40 +104,18 @@ function makeTextSprite(text, { fontFace='Arial', fontSize=120, color='#ffffff',
 }
 
 // theme
-let currentBiancaColor = '#ff3366';
+let currentBiancaColor = '#f191a3';
 
-// rounded box
 function createRoundedBoxGeometry(size, radius, segments = 4){
-  radius = Math.min(radius, size/2 * 0.999);
-  const half = size/2;
-  const inner = half - radius;
-  const seg = Math.max(1, segments);
-  const geom = new THREE.BoxGeometry(size, size, size, seg*2, seg*2, seg*2);
-  const pos = geom.attributes.position;
-  const v = new THREE.Vector3();
-  for(let i=0;i<pos.count;i++){
-    v.fromBufferAttribute(pos, i);
-    const ax = Math.abs(v.x), ay = Math.abs(v.y), az = Math.abs(v.z);
-    if(ax <= inner && ay <= inner && az <= inner) continue;
-    const bx = Math.sign(v.x) * Math.min(ax, inner);
-    const by = Math.sign(v.y) * Math.min(ay, inner);
-    const bz = Math.sign(v.z) * Math.min(az, inner);
-
-    const dx = v.x - bx;
-    const dy = v.y - by;
-    const dz = v.z - bz;
-    const d = Math.hypot(dx,dy,dz) || 1;
-
-    const k = radius / d;
-    v.set(bx + dx*k, by + dy*k, bz + dz*k);
-    pos.setXYZ(i, v.x, v.y, v.z);
-  }
-  pos.needsUpdate = true;
-  geom.computeVertexNormals();
-  return geom;
+  return new THREE.BoxGeometry(size, size, size);
 }
 
 (function setupBiancaPseudo3D(){
+  if (typeof THREE === 'undefined') {
+    setTimeout(setupBiancaPseudo3D, 100);
+    return;
+  }
+  
   function makeLayerTexture(color){
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
@@ -186,11 +172,10 @@ function updateNodeObjects(node) {
     let tex = cache[node.img];
     if(!tex){ tex = new THREE.TextureLoader().load(node.img); cache[node.img] = tex; }
     const size = 14;
-    const radius = size * 0.3; // rounding (0.25 before)
-    const key = size+":"+radius;
+    const key = size;
     const gCache = (updateNodeObjects._geomCache || (updateNodeObjects._geomCache = {}));
     let geom = gCache[key];
-    if(!geom){ geom = createRoundedBoxGeometry(size, radius, 5); gCache[key] = geom; }
+    if(!geom){ geom = createRoundedBoxGeometry(size, 0, 5); gCache[key] = geom; }
     const mat = new THREE.MeshBasicMaterial({ map: tex });
     return new THREE.Mesh(geom, mat);
   }
@@ -207,7 +192,7 @@ function setGraphTheme(mode){
     currentBiancaColor = '#66b2ff';
   } else {
     document.body.classList.remove('blue-theme');
-    currentBiancaColor = '#ff3366';
+    currentBiancaColor = '#f191a3';
   }
   Graph.nodeThreeObject(updateNodeObjects);
   if(typeof Graph.refresh === 'function'){ 
@@ -217,6 +202,12 @@ function setGraphTheme(mode){
 }
 
 setGraphTheme('light');
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeGraph);
+} else {
+  initializeGraph();
+}
 
 // ==============================================================================
 
